@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "Hash": "xQa6c+MxklNsNEmM8WZMdOPEV0dvxzfu6rxi0JKWn8M=",
+  "Source": "ZZ.WebAPI",
+  "BasePath": "_content/ZZ.WebAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "ZZ.WebAPI\\wwwroot",
+      "Source": "ZZ.WebAPI",
+      "ContentRoot": "E:\\Project_List\\SeeSharp\\ZZ.PersonnelMS\\ZZ.WebAPI\\wwwroot\\",
+      "BasePath": "_content/ZZ.WebAPI",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "E:\\Project_List\\SeeSharp\\ZZ.PersonnelMS\\ZZ.WebAPI\\wwwroot\\duck1.jpg",
+      "SourceId": "ZZ.WebAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Project_List\\SeeSharp\\ZZ.PersonnelMS\\ZZ.WebAPI\\wwwroot\\",
+      "BasePath": "_content/ZZ.WebAPI",
+      "RelativePath": "duck1.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\duck1.jpg"
+    }
+  ]
+}

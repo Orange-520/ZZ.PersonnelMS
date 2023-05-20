@@ -1,0 +1,12 @@
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.Commons\bin\Debug\net6.0\ZZ.Commons.deps.json
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.Commons\bin\Debug\net6.0\ZZ.Commons.dll
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.Commons\bin\Debug\net6.0\ZZ.Commons.pdb
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.Commons\obj\Debug\net6.0\ZZ.Commons.csproj.AssemblyReference.cache
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.Commons\obj\Debug\net6.0\ZZ.Commons.GeneratedMSBuildEditorConfig.editorconfig
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.Commons\obj\Debug\net6.0\ZZ.Commons.AssemblyInfoInputs.cache
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.Commons\obj\Debug\net6.0\ZZ.Commons.AssemblyInfo.cs
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.Commons\obj\Debug\net6.0\ZZ.Commons.csproj.CoreCompileInputs.cache
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.Commons\obj\Debug\net6.0\ZZ.Commons.dll
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.Commons\obj\Debug\net6.0\refint\ZZ.Commons.dll
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.Commons\obj\Debug\net6.0\ZZ.Commons.pdb
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.Commons\obj\Debug\net6.0\ref\ZZ.Commons.dll

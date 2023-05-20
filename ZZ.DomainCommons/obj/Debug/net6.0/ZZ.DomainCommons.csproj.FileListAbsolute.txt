@@ -1,0 +1,12 @@
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.DomainCommons\bin\Debug\net6.0\ZZ.DomainCommons.deps.json
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.DomainCommons\bin\Debug\net6.0\ZZ.DomainCommons.dll
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.DomainCommons\bin\Debug\net6.0\ZZ.DomainCommons.pdb
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.DomainCommons\obj\Debug\net6.0\ZZ.DomainCommons.csproj.AssemblyReference.cache
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.DomainCommons\obj\Debug\net6.0\ZZ.DomainCommons.GeneratedMSBuildEditorConfig.editorconfig
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.DomainCommons\obj\Debug\net6.0\ZZ.DomainCommons.AssemblyInfoInputs.cache
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.DomainCommons\obj\Debug\net6.0\ZZ.DomainCommons.AssemblyInfo.cs
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.DomainCommons\obj\Debug\net6.0\ZZ.DomainCommons.csproj.CoreCompileInputs.cache
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.DomainCommons\obj\Debug\net6.0\ZZ.DomainCommons.dll
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.DomainCommons\obj\Debug\net6.0\refint\ZZ.DomainCommons.dll
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.DomainCommons\obj\Debug\net6.0\ZZ.DomainCommons.pdb
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.DomainCommons\obj\Debug\net6.0\ref\ZZ.DomainCommons.dll
