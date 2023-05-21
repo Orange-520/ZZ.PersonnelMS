@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="content">
     <router-view></router-view>
   </div>
 </template>
@@ -10,6 +10,14 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="less" scoped>
+  .content{
+    position: fixed;
+    top: 90px;
+    bottom: 0;
+    left: 220px;
+    right: 0;
+    padding-bottom: 44px;
+    width: auto;
+  }
 </style>

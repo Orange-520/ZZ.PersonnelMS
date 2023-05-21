@@ -32,7 +32,7 @@ export default new VueRouter({
 		// 默认路由，默认进入此页面
 		{
 			path: '/',
-			redirect: 'login'
+			redirect: '/login'
 		},
 		{
 			path: '/login',
@@ -42,28 +42,57 @@ export default new VueRouter({
 			path: '/home',
 			component: home,
       children:[
-        // 默认页
 				{
-					path:'office',
-          children:[
-						{
-							path:'message',
-							component:message,
-						},
-						{
-							path:'applyList',
-							component:applyList
-						}
-					]
+					path:'office/message',
+					component:message
 				},
 				{
-					path:'notice',
-					children:[
-						{
-							path:'noticePublish',
-							component:noticePublish
-						}
-					]
+					path:'office/applyList',
+					component:applyList
+				},
+				{
+					path:'office/applyHiringNeeds',
+					component:applyHiringNeeds
+				},
+				{
+					path:'office/approve',
+					component:approve
+				},
+				{
+					path:'office/notice',
+					component:notice
+				},
+				{
+					path:'notice/noticePublish',
+					component:noticePublish
+				},
+				{
+					path:'record/addRecord',
+					component:addRecord
+				},
+				{
+					path:'record/dimissionList',
+					component:dimissionList
+				},
+				{
+					path:'joinUs/hiringNeedsList',
+					component:hiringNeedsList
+				},
+				{
+					path:'joinUs/addResume',
+					component:addResume
+				},
+				{
+					path:'joinUs/resumeList',
+					component:resumeList
+				},
+				{
+					path:'joinUs/personLibrary',
+					component:personLibrary
+				},
+				{
+					path:'joinUs/dataLibrary',
+					component:dataLibrary
 				},
       ]
 		},

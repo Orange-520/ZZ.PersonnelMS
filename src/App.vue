@@ -8,8 +8,6 @@
 
 export default {
   name: 'App',
-  components: {
-  },
   created(){
     // //在页面加载时读取sessionStorage里的状态信息
     // if(sessionStorage.getItem('storeState')){
@@ -26,5 +24,34 @@ export default {
 </script>
 
 <style>
+#app {
+  height: 100vh;
+}
 
+*{
+  margin: 0;
+  padding: 0; 
+  box-sizing: border-box;
+  outline: none;
+}
+
+li {
+    list-style: none;
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 1px;
+}
+::-webkit-scrollbar-thumb { 
+  border-radius: 5px;
+  background-color: #d9d9d9 ;
+}
+::-webkit-scrollbar-track { 
+  /* box-shadow: inset 0 0 5px rgba(0,0,0,0.2); */
+  box-shadow: inset 0 0 5px rgb(217, 236, 255);
+  background: #ededed;
+  border-radius: 5px;
+}
 </style>
