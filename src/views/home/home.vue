@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <Header></Header>
     <Menu></Menu>
+    <Header></Header>
     <Tags></Tags>
     <Content></Content>
   </div>
@@ -19,5 +19,7 @@ export default {
 </script>
 
 <style lang='less' scoped>
-  
+  // .home{
+  //   height: 100%;
+  // }
 </style>

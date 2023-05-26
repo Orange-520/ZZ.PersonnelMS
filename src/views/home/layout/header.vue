@@ -18,15 +18,17 @@ export default {
   .header{
     position: fixed;
     top: 0;
-    left: 0;
+    left: 220px;
     width: 100%;
     height: 50px;
+    background: #1E9FFF;
+    box-shadow: -2px 0px 2px 0 rgb(0 0 0 / 10%);
     // border: 1px red solid;
 
     .nav-left{
       position: relative;
       padding: 0 10px;
-      left: 220px;
+      left: 0px;
       top: 0;
     }
 

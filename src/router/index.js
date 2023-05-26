@@ -5,8 +5,10 @@ import home from "@/views/home/home.vue";
 import error from "@/views/error/error.vue";
 
 const message = () => import("@/views/home/layout/office/message.vue");
-const applyList = () => import("@/views/home/layout/office/apply-list.vue");
-const applyHiringNeeds = () => import("@/views/home/layout/office/apply-hiring-needs.vue");
+const userApply = () => import("@/views/home/layout/office/user-apply.vue");
+// const applyList = () => import("@/views/home/layout/office/apply-list.vue");
+// const applyHiringNeeds = () => import("@/views/home/layout/office/apply-hiring-needs.vue");
+// const applyAskForLeave = () => import("@/views/home/layout/office/apply-ask-for-leave.vue");
 const approve = () => import("@/views/home/layout/office/approve.vue");
 const notice = () => import("@/views/home/layout/office/notice.vue");
 
@@ -20,6 +22,14 @@ const addResume = () => import("@/views/home/layout/join-us/add-resume.vue");
 const resumeList = () => import("@/views/home/layout/join-us/resume-list.vue");
 const personLibrary = () => import("@/views/home/layout/join-us/person-library.vue");
 const dataLibrary = () => import("@/views/home/layout/join-us/data-library.vue");
+
+// 解决冗余导航问题
+const originalPush = VueRouter.prototype.push
+
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
 
 export default new VueRouter({
   mode:"hash",
@@ -41,18 +51,30 @@ export default new VueRouter({
 		{
 			path: '/home',
 			component: home,
+			redirect:'home/office/message',
       children:[
 				{
 					path:'office/message',
 					component:message
 				},
 				{
-					path:'office/applyList',
-					component:applyList
-				},
-				{
-					path:'office/applyHiringNeeds',
-					component:applyHiringNeeds
+					path:'office/userApply',
+					// redirect:'office/userApply/applyList',
+					component:userApply,
+					// children:[
+					// 	{
+					// 		path:'applyList',
+					// 		component:applyList
+					// 	},
+					// 	{
+					// 		path:'applyHiringNeeds',
+					// 		component:applyHiringNeeds
+					// 	},
+					// 	{
+					// 		path:'applyAskForLeave',
+					// 		component:applyAskForLeave
+					// 	}
+					// ]
 				},
 				{
 					path:'office/approve',

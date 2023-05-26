@@ -17,7 +17,7 @@ export default {
     bottom: 0;
     left: 220px;
     right: 0;
-    padding-bottom: 44px;
-    width: auto;
+    // padding-bottom: 44px;
+    // width: 100%;
   }
 </style>

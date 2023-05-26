@@ -9,16 +9,16 @@
 export default {
   name: 'App',
   created(){
-    // //在页面加载时读取sessionStorage里的状态信息
-    // if(sessionStorage.getItem('storeState')){
-    //   //replaceState，替换store的根状态
-    //   this.$store.replaceState(Object.assign({},this.$store.state,JSON.parse(sessionStorage.getItem('storeState'))))
-    // }
+    //在页面加载时读取sessionStorage里的状态信息
+    if(sessionStorage.getItem('storeState')){
+      //replaceState，替换store的根状态
+      this.$store.replaceState(Object.assign({},this.$store.state,JSON.parse(sessionStorage.getItem('storeState'))))
+    }
  
-    // //在页面刷新时将vuex里的信息保存到sessionStorage里
-    // window.addEventListener('beforeunload',()=>{
-    //   sessionStorage.setItem('storeState',JSON.stringify(this.$store.state))
-    // })
+    //在页面刷新时将vuex里的信息保存到sessionStorage里
+    window.addEventListener('beforeunload',()=>{
+      sessionStorage.setItem('storeState',JSON.stringify(this.$store.state))
+    })
   }
 }
 </script>
@@ -39,19 +39,37 @@ li {
     list-style: none;
 }
 
+.pointer{
+  cursor: pointer;
+}
+.el-cascader-menu .el-radio {
+    display: table;
+    vertical-align: middle;
+    width: 90%;
+    height: 100%;
+    position: absolute;
+    box-sizing: border-box;
+    margin-left: -20px;
+    padding-left: 10px;
+}
+.el-cascader-menu .el-radio .el-radio__input {
+    display: table-cell;
+    vertical-align: middle;
+    visibility: hidden;
+}
+
 /* 滚动条 */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 1px;
   height: 1px;
 }
 ::-webkit-scrollbar-thumb { 
   border-radius: 5px;
-  background-color: #d9d9d9 ;
+  background-color: #d9d9d900;
 }
-::-webkit-scrollbar-track { 
-  /* box-shadow: inset 0 0 5px rgba(0,0,0,0.2); */
-  box-shadow: inset 0 0 5px rgb(217, 236, 255);
-  background: #ededed;
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgb(217, 236, 255,0);
+  background: #ededed00;
   border-radius: 5px;
 }
 </style>

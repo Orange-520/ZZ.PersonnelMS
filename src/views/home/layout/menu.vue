@@ -1,49 +1,26 @@
 <template>
   <div class="menu">
-    <div>
+    <div class="logo">
       ZZ人事管理系统
     </div>
     <el-menu :default-active="$route.path" class="el-menu-vertical" background-color="rgb(57, 61, 73)"
-      text-color="rgb(153,153,153)" active-text-color="#ffd04b" router>
+      text-color="rgb(210 210 210)" active-text-color="#ffd04b" router>
 
-      <el-submenu index='1'>
+      <el-submenu v-for="(menu,index) in menuData" 
+      :key="index"
+      :index='menu.url'
+      >
         <template slot="title">
-          <i class="el-icon-caret-right"></i>
-          <span>个人办公</span>
+          <i :class="menu.icon"></i>
+          <span>{{menu.name}}</span>
         </template>
-        <el-menu-item index="/home/office/message">消息提醒</el-menu-item>
-        <el-menu-item index="/home/office/applyList">个人申请</el-menu-item>
-        <el-menu-item index="/home/office/approve">申请审批</el-menu-item>
-        <el-menu-item index="/home/office/notice">公告通知</el-menu-item>
-      </el-submenu>
-
-      <el-submenu index='2'>
-        <template slot="title">
-          <i class="el-icon-caret-right"></i>
-          <span>行政管理</span>
-        </template>
-        <el-menu-item index="/home/notice/noticePublish">公告发布</el-menu-item>
-      </el-submenu>
-
-      <el-submenu index='3'>
-        <template slot="title">
-          <i class="el-icon-caret-right"></i>
-          <span>人事管理</span>
-        </template>
-        <el-menu-item index="/home/record/addRecord">添加档案</el-menu-item>
-        <el-menu-item index="/home/record/dimissionList">离职档案</el-menu-item>
-      </el-submenu>
-
-      <el-submenu index='4'>
-        <template slot="title">
-          <i class="el-icon-caret-right"></i>
-          <span>招聘管理</span>
-        </template>
-        <el-menu-item index="/home/joinUs/hiringNeedsList">招聘需求</el-menu-item>
-        <el-menu-item index="/home/joinUs/addResume">应聘登记</el-menu-item>
-        <el-menu-item index="/home/joinUs/resumeList">应聘列表</el-menu-item>
-        <el-menu-item index="/home/joinUs/personLibrary">人才库</el-menu-item>
-        <el-menu-item index="/home/joinUs/dataLibrary">资料库</el-menu-item>
+        <el-menu-item v-for="(item,index) in menu.children" 
+        :key="index"
+        :index="item.url"
+        @click="clickMenu(item)"
+        >
+        {{item.name}}
+        </el-menu-item>
       </el-submenu>
       
     </el-menu>
@@ -52,7 +29,109 @@
 
 <script>
 export default {
-
+  data(){
+    return{
+      menuData:[
+        {
+          icon: 'el-icon-caret-right',
+          name: '个人办公',
+          url: "0",
+          children: [
+            {
+              name: "消息提醒",
+              url: '/home/office/message',
+            },
+            {
+              name: "个人申请",
+              url: '/home/office/userApply',
+            },
+            {
+              name: "申请审批",
+              url: '/home/office/approve',
+            },
+            {
+              name: "公告通知",
+              url: '/home/office/notice',
+            },
+          ]
+        },
+        {
+          icon: 'el-icon-caret-right',
+          name: '行政管理',
+          url: "1",
+          children: [
+            {
+              name: "公告发布",
+              url: '/home/notice/noticePublish',
+            }
+          ]
+        },
+        {
+          icon: 'el-icon-caret-right',
+          name: '人事管理',
+          url: "2",
+          children: [
+            {
+              name: "添加档案",
+              url: '/home/record/addRecord',
+            },
+            {
+              name: "离职档案",
+              url: '/home/record/dimissionList',
+            }
+          ]
+        },
+        {
+          icon: 'el-icon-caret-right',
+          name: '招聘管理',
+          url: "3",
+          children: [
+            {
+              name: "招聘需求",
+              url: '/home/joinUs/hiringNeedsList',
+            },
+            {
+              name: "应聘登记",
+              url: '/home/joinUs/addResume',
+            },
+            {
+              name: "应聘列表",
+              url: '/home/joinUs/resumeList',
+            },
+            {
+              name: "人才库",
+              url: '/home/joinUs/personLibrary',
+            },
+            {
+              name: "资料库",
+              url: '/home/joinUs/dataLibrary',
+            }
+          ]
+        },
+        {
+          icon: 'el-icon-caret-right',
+          name: '系统管理',
+          url: "4",
+          children: [
+            {
+              name: "账号管理",
+              url: '/home/system/account',
+            },
+            {
+              name: "部门和职位管理",
+              url: '/home/system/departmentAndPosition',
+            }
+          ]
+        },
+      ]
+    }
+  },
+  methods:{
+    clickMenu(value) {
+    //通过vuex将数据存储在store中
+        this.$store.commit('tags/mutationSelectTags', value)
+    }
+  }
 }
 </script>
 
@@ -66,6 +145,16 @@ export default {
     background: rgb(57, 61, 73);
   }
   
+  .logo{
+    height: 50px;
+    text-align:center;
+    color:rgb(255, 255, 255);
+    padding:10px 0;
+    font-size:1.2rem;
+    background: rgb(30,158,255);
+    // background: rgb(57, 61, 73);
+  }
+
   .el-menu-vertical{
     overflow-x: hidden;
     height: 100%;

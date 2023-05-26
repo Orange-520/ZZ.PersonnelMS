@@ -4,7 +4,7 @@ import { Message } from 'element-ui';
 const instance  = axios.create({
   baseURL: 'https://localhost:7147',
   timeout: 5000,
-  headers: {'Authorization': window.localStorage.getItem('token')}
+  headers: {'Authorization': "Bearer "+window.localStorage.getItem('token')}
 });
 
 // 添加请求拦截器
