@@ -117,3 +117,5 @@ E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.WebAPI\bin\Debug\net6.0\Microsoft.Asp
 E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.WebAPI\bin\Debug\net6.0\Newtonsoft.Json.dll
 E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.WebAPI\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
 E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.WebAPI\bin\Debug\net6.0\ZZ.WebAPI.staticwebassets.runtime.json
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.WebAPI\bin\Debug\net6.0\ZZ.JWT.dll
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.WebAPI\bin\Debug\net6.0\ZZ.JWT.pdb

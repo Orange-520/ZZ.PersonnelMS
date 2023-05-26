@@ -37,5 +37,14 @@ namespace ZZ.Domain.Entities.Office
 			this.IsDeleted= true;
 			this.DeletionTime= DateTime.Now;
 		}
+
+		/// <summary>
+		/// 改变实体的审核状态
+		/// </summary>
+		/// <param name="checkState"></param>
+		public void AlterCheckState(CheckState checkState)
+		{
+			this.CheckState = checkState;
+		}
 	}
 }

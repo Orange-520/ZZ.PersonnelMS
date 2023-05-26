@@ -12,7 +12,8 @@
           "Microsoft.EntityFrameworkCore.Design": "7.0.5",
           "Microsoft.EntityFrameworkCore.Tools": "7.0.5",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.5",
-          "ZZ.Domain": "1.0.0"
+          "ZZ.Domain": "1.0.0",
+          "ZZ.JWT": "1.0.0"
         },
         "runtime": {
           "ZZ.Infrastructure.dll": {}
@@ -847,6 +848,11 @@
         "runtime": {
           "ZZ.DomainCommons.dll": {}
         }
+      },
+      "ZZ.JWT/1.0.0": {
+        "runtime": {
+          "ZZ.JWT.dll": {}
+        }
       }
     }
   },
@@ -1413,6 +1419,11 @@
       "sha512": ""
     },
     "ZZ.DomainCommons/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ZZ.JWT/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

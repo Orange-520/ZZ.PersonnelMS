@@ -1,0 +1,12 @@
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.JWT\bin\Debug\net6.0\ZZ.JWT.deps.json
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.JWT\bin\Debug\net6.0\ZZ.JWT.dll
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.JWT\bin\Debug\net6.0\ZZ.JWT.pdb
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.JWT\obj\Debug\net6.0\ZZ.JWT.csproj.AssemblyReference.cache
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.JWT\obj\Debug\net6.0\ZZ.JWT.GeneratedMSBuildEditorConfig.editorconfig
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.JWT\obj\Debug\net6.0\ZZ.JWT.AssemblyInfoInputs.cache
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.JWT\obj\Debug\net6.0\ZZ.JWT.AssemblyInfo.cs
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.JWT\obj\Debug\net6.0\ZZ.JWT.csproj.CoreCompileInputs.cache
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.JWT\obj\Debug\net6.0\ZZ.JWT.dll
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.JWT\obj\Debug\net6.0\refint\ZZ.JWT.dll
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.JWT\obj\Debug\net6.0\ZZ.JWT.pdb
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.JWT\obj\Debug\net6.0\ref\ZZ.JWT.dll

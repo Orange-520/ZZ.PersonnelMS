@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ZZ.Commons;
 using ZZ.Domain.Entities.Commons;
 using ZZ.Domain.Entities.JoinUs;
 using ZZ.Infrastructure;
+using ZZ.WebAPI.Controllers.JoinUs.HiringNeedApply;
 using ZZ.WebAPI.Filter;
 
 namespace ZZ.WebAPI.Controllers.JoinUs
 {
-	[Route("[controller]/[action]")]
+    [Route("[controller]/[action]")]
 	[ApiController]
 	[UnitOfWork(typeof(MyDbContext))]
 	public class JoinUsController : ControllerBase
@@ -70,12 +73,8 @@ namespace ZZ.WebAPI.Controllers.JoinUs
 			return StatusCode(200,new { code =200 , msg = "添加成功"});
 		}
 
-		[HttpPost]
-		public Resume Test(ResumeRequest req)
-		{
-			Resume r = ForeachProperty.TransReflection<ResumeRequest, Resume>(req);
-			return r;
-		}
+		
+
 	}
 
 }

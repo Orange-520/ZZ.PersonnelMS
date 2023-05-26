@@ -27,17 +27,16 @@ namespace ZZ.Domain.Entities.Office
 		/// 如果实体类中声明了其它的构造函数，需要准备一个无参构造函数供 EF Core 使用
 		/// </summary>
 		public HiringNeedApply() { }
-		public HiringNeedApply(User user,ApplyType applyType,string content,User? checkUser,Department department,Position position,int needPersonCount)
+		public HiringNeedApply(User user,string content,User? checkUser,Department department,Position position,int needPersonCount)
 		{
+			base.CreationTime = DateTime.Now;
+			base.ApplyType = ApplyType.HiringNeeds;
 			base.User = user;
-			base.ApplyType = applyType;
 			base.Content = content;
 			base.CheckUser = checkUser;
-			base.CreationTime = DateTime.Now;
 			this.Department = department;
 			this.Position = position;
 			this.NeedPersonCount = needPersonCount;
-			
 		}
 	}
 }

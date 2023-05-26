@@ -1693,13 +1693,24 @@
         "dependencies": {
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "6.0.10",
           "Microsoft.EntityframeworkCore.SqlServer": "7.0.5",
-          "ZZ.Domain": "1.0.0"
+          "ZZ.Domain": "1.0.0",
+          "ZZ.JWT": "1.0.0"
         },
         "compile": {
           "bin/placeholder/ZZ.Infrastructure.dll": {}
         },
         "runtime": {
           "bin/placeholder/ZZ.Infrastructure.dll": {}
+        }
+      },
+      "ZZ.JWT/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/ZZ.JWT.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ZZ.JWT.dll": {}
         }
       }
     }
@@ -4701,6 +4712,11 @@
       "type": "project",
       "path": "../ZZ.Infrastructure/ZZ.Infrastructure.csproj",
       "msbuildProject": "../ZZ.Infrastructure/ZZ.Infrastructure.csproj"
+    },
+    "ZZ.JWT/1.0.0": {
+      "type": "project",
+      "path": "../ZZ.JWT/ZZ.JWT.csproj",
+      "msbuildProject": "../ZZ.JWT/ZZ.JWT.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -4709,8 +4725,10 @@
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson >= 6.0.10",
       "Serilog.AspNetCore >= 7.0.0",
       "Swashbuckle.AspNetCore >= 6.2.3",
+      "ZZ.Commons >= 1.0.0",
       "ZZ.Domain >= 1.0.0",
-      "ZZ.Infrastructure >= 1.0.0"
+      "ZZ.Infrastructure >= 1.0.0",
+      "ZZ.JWT >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -4745,11 +4763,17 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
+            "E:\\Project_List\\SeeSharp\\ZZ.PersonnelMS\\ZZ.Commons\\ZZ.Commons.csproj": {
+              "projectPath": "E:\\Project_List\\SeeSharp\\ZZ.PersonnelMS\\ZZ.Commons\\ZZ.Commons.csproj"
+            },
             "E:\\Project_List\\SeeSharp\\ZZ.PersonnelMS\\ZZ.Domain\\ZZ.Domain.csproj": {
               "projectPath": "E:\\Project_List\\SeeSharp\\ZZ.PersonnelMS\\ZZ.Domain\\ZZ.Domain.csproj"
             },
             "E:\\Project_List\\SeeSharp\\ZZ.PersonnelMS\\ZZ.Infrastructure\\ZZ.Infrastructure.csproj": {
               "projectPath": "E:\\Project_List\\SeeSharp\\ZZ.PersonnelMS\\ZZ.Infrastructure\\ZZ.Infrastructure.csproj"
+            },
+            "E:\\Project_List\\SeeSharp\\ZZ.PersonnelMS\\ZZ.JWT\\ZZ.JWT.csproj": {
+              "projectPath": "E:\\Project_List\\SeeSharp\\ZZ.PersonnelMS\\ZZ.JWT\\ZZ.JWT.csproj"
             }
           }
         }

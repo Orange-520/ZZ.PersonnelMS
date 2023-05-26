@@ -5,8 +5,9 @@ using Microsoft.Extensions.Options;
 using System.Net;
 using ZZ.Commons;
 using ZZ.Domain.Entities.Identity;
-using ZZ.DomainCommons;
+using ZZ.JWT;
 using ZZ.Infrastructure;
+using System.Security.Claims;
 
 namespace ZZ.WebAPI.Controllers.Identity
 {
@@ -84,6 +85,12 @@ namespace ZZ.WebAPI.Controllers.Identity
 			}
 		}
 
-		
+		// 获取用户信息
+		//[HttpPost]
+		//public Task<IActionResult> GetUserInfo()
+		//{
+		//	string guid = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+		//}
 	}
 }

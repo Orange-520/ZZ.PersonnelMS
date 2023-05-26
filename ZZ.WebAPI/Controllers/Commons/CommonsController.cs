@@ -124,7 +124,7 @@ namespace ZZ.WebAPI.Controllers.Commons
 		/// <param name="id"></param>
 		/// <returns></returns>
 		[HttpGet]
-		public async Task<IActionResult> FindPositionByDepartment([FromQuery]int id)
+		public async Task<IActionResult> FindPositionByDepartment([FromQuery(Name ="id")]int id)
 		{
 			Department? d = await this.repository.FindByDepartmentIdAsync(id);
 			if (d == null)

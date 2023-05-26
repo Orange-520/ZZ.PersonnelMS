@@ -3,17 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZZ.Commons", "ZZ.Commons\ZZ.Commons.csproj", "{DAE2FD1D-CC6F-4025-A13A-9F512C47CCAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZZ.Commons", "ZZ.Commons\ZZ.Commons.csproj", "{DAE2FD1D-CC6F-4025-A13A-9F512C47CCAF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZZ.DomainCommons", "ZZ.DomainCommons\ZZ.DomainCommons.csproj", "{C5BD9C1B-015A-4CBA-8E4F-4E2C82A2EF56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZZ.DomainCommons", "ZZ.DomainCommons\ZZ.DomainCommons.csproj", "{C5BD9C1B-015A-4CBA-8E4F-4E2C82A2EF56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZZ.Domain", "ZZ.Domain\ZZ.Domain.csproj", "{7EB6A1F8-B67D-44E6-936C-54F612A7478F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZZ.Domain", "ZZ.Domain\ZZ.Domain.csproj", "{7EB6A1F8-B67D-44E6-936C-54F612A7478F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Commons", "Commons", "{95B8E7E3-BCA9-4149-9744-3BD5D27EC979}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZZ.Infrastructure", "ZZ.Infrastructure\ZZ.Infrastructure.csproj", "{EE0878EE-77B5-49AA-99C0-FB525902512C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZZ.Infrastructure", "ZZ.Infrastructure\ZZ.Infrastructure.csproj", "{EE0878EE-77B5-49AA-99C0-FB525902512C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZZ.WebAPI", "ZZ.WebAPI\ZZ.WebAPI.csproj", "{BDB8609F-D5B4-4A50-985E-47DB61811488}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZZ.WebAPI", "ZZ.WebAPI\ZZ.WebAPI.csproj", "{BDB8609F-D5B4-4A50-985E-47DB61811488}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZZ.JWT", "ZZ.JWT\ZZ.JWT.csproj", "{751F5B61-A120-4A9F-B2C7-9D799D4C09D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{BDB8609F-D5B4-4A50-985E-47DB61811488}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDB8609F-D5B4-4A50-985E-47DB61811488}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDB8609F-D5B4-4A50-985E-47DB61811488}.Release|Any CPU.Build.0 = Release|Any CPU
+		{751F5B61-A120-4A9F-B2C7-9D799D4C09D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{751F5B61-A120-4A9F-B2C7-9D799D4C09D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{751F5B61-A120-4A9F-B2C7-9D799D4C09D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{751F5B61-A120-4A9F-B2C7-9D799D4C09D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{DAE2FD1D-CC6F-4025-A13A-9F512C47CCAF} = {95B8E7E3-BCA9-4149-9744-3BD5D27EC979}
 		{C5BD9C1B-015A-4CBA-8E4F-4E2C82A2EF56} = {95B8E7E3-BCA9-4149-9744-3BD5D27EC979}
+		{751F5B61-A120-4A9F-B2C7-9D799D4C09D4} = {95B8E7E3-BCA9-4149-9744-3BD5D27EC979}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EECB7F0B-AF76-49E3-B544-7B6C1E51FB2E}

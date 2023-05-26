@@ -722,6 +722,9 @@ namespace ZZ.Infrastructure.Migrations
                     b.Property<int>("ApplyType")
                         .HasColumnType("int");
 
+                    b.Property<int>("AskForLeaveType")
+                        .HasColumnType("int");
+
                     b.Property<int>("CheckState")
                         .HasColumnType("int");
 
@@ -740,6 +743,10 @@ namespace ZZ.Infrastructure.Migrations
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("HowLong")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -821,6 +828,52 @@ namespace ZZ.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("T_HiringNeedApplys", (string)null);
+                });
+
+            modelBuilder.Entity("ZZ.Domain.Entities.Office.Reply", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("HasRead")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("PublisherUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ReplyContent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReplyTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ReplyType")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PublisherUserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("T_Replys", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -1040,6 +1093,25 @@ namespace ZZ.Infrastructure.Migrations
                     b.Navigation("Department");
 
                     b.Navigation("Position");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ZZ.Domain.Entities.Office.Reply", b =>
+                {
+                    b.HasOne("ZZ.Domain.Entities.Identity.User", "PublisherUser")
+                        .WithMany()
+                        .HasForeignKey("PublisherUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ZZ.Domain.Entities.Identity.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("PublisherUser");
 
                     b.Navigation("User");
                 });

@@ -12,8 +12,10 @@
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "6.0.10",
           "Serilog.AspNetCore": "7.0.0",
           "Swashbuckle.AspNetCore": "6.2.3",
+          "ZZ.Commons": "1.0.0",
           "ZZ.Domain": "1.0.0",
-          "ZZ.Infrastructure": "1.0.0"
+          "ZZ.Infrastructure": "1.0.0",
+          "ZZ.JWT": "1.0.0"
         },
         "runtime": {
           "ZZ.WebAPI.dll": {}
@@ -1048,10 +1050,16 @@
         "dependencies": {
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "6.0.10",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.5",
-          "ZZ.Domain": "1.0.0"
+          "ZZ.Domain": "1.0.0",
+          "ZZ.JWT": "1.0.0"
         },
         "runtime": {
           "ZZ.Infrastructure.dll": {}
+        }
+      },
+      "ZZ.JWT/1.0.0": {
+        "runtime": {
+          "ZZ.JWT.dll": {}
         }
       }
     }
@@ -1750,6 +1758,11 @@
       "sha512": ""
     },
     "ZZ.Infrastructure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ZZ.JWT/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

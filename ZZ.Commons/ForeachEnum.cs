@@ -9,7 +9,7 @@
 		/// <param name="value"></param>
 		/// <returns>存在返回枚举类型，不存在返回枚举类型中的 None</returns>
 		/// <exception cref="ArgumentException"></exception>
-		public static TEnum GetEnumFromInt<TEnum>(int value) where TEnum : struct, Enum
+		public static TEnum GetEnumFromInt<TEnum>(int? value) where TEnum : struct, Enum
 		{
 			if (!typeof(TEnum).IsEnum)
 			{

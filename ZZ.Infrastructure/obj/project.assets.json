@@ -1365,6 +1365,16 @@
         "runtime": {
           "bin/placeholder/ZZ.DomainCommons.dll": {}
         }
+      },
+      "ZZ.JWT/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/ZZ.JWT.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ZZ.JWT.dll": {}
+        }
       }
     }
   },
@@ -3943,6 +3953,11 @@
       "type": "project",
       "path": "../ZZ.DomainCommons/ZZ.DomainCommons.csproj",
       "msbuildProject": "../ZZ.DomainCommons/ZZ.DomainCommons.csproj"
+    },
+    "ZZ.JWT/1.0.0": {
+      "type": "project",
+      "path": "../ZZ.JWT/ZZ.JWT.csproj",
+      "msbuildProject": "../ZZ.JWT/ZZ.JWT.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -3951,7 +3966,8 @@
       "Microsoft.EntityFrameworkCore.Design >= 7.0.5",
       "Microsoft.EntityFrameworkCore.Tools >= 7.0.5",
       "Microsoft.EntityframeworkCore.SqlServer >= 7.0.5",
-      "ZZ.Domain >= 1.0.0"
+      "ZZ.Domain >= 1.0.0",
+      "ZZ.JWT >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -3988,6 +4004,9 @@
           "projectReferences": {
             "E:\\Project_List\\SeeSharp\\ZZ.PersonnelMS\\ZZ.Domain\\ZZ.Domain.csproj": {
               "projectPath": "E:\\Project_List\\SeeSharp\\ZZ.PersonnelMS\\ZZ.Domain\\ZZ.Domain.csproj"
+            },
+            "E:\\Project_List\\SeeSharp\\ZZ.PersonnelMS\\ZZ.JWT\\ZZ.JWT.csproj": {
+              "projectPath": "E:\\Project_List\\SeeSharp\\ZZ.PersonnelMS\\ZZ.JWT\\ZZ.JWT.csproj"
             }
           }
         }

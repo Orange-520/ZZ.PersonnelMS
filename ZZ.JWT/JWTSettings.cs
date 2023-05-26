@@ -1,4 +1,4 @@
-﻿namespace ZZ.DomainCommons
+﻿namespace ZZ.JWT
 {
 	public class JWTSettings
 	{

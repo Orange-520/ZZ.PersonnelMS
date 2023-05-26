@@ -58,7 +58,7 @@ namespace ZZ.Infrastructure
 			var chilren = this.dbContext.Departments.AsNoTracking().Where(e => e.ParentDepartmen == parentD).ToList();
 			if (chilren.Count == 0)
 			{
-				return chilren;
+				return null;
 			}
 			foreach (var child in chilren)
 			{

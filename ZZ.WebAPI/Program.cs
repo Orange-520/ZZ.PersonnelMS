@@ -9,9 +9,10 @@ using Serilog;
 using System.Text;
 using ZZ.Commons;
 using ZZ.Domain.Entities.Identity;
-using ZZ.DomainCommons;
+using ZZ.JWT;
 using ZZ.Infrastructure;
 using ZZ.WebAPI.Filter;
+using ZZ.WebAPI.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,7 @@ builder.Services.AddSwaggerGen();
 //builder.Services.AddScoped<IdentityService>();
 builder.Services.AddScoped<IdentityRepository>();
 builder.Services.AddScoped<CommonRepository>();
+builder.Services.AddScoped<OfficeRepository>();
 //builder.Services.AddScoped<IIdentityRepository, IdentityRepository>();
 //builder.Services.AddScoped<ICommonRepository, CommonRepository>();
 builder.Services.AddScoped<IDistributedCacheHelper, DistributedCacheHelper>();
@@ -92,6 +94,8 @@ idBuilder.AddEntityFrameworkStores<MyDbContext>()
 	.AddUserManager<UserManager<User>>();
 
 
+//builder.Services.AddAuthorization();
+
 // 读取appsettings.json配置文件中的信息
 builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWT"));
 // 配置JWT
@@ -104,14 +108,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 	options.TokenValidationParameters = new()
 	{
-		ValidateIssuer = false,
-		ValidateAudience = false,
-		ValidateLifetime = true,
-		ValidateIssuerSigningKey = true,
-		IssuerSigningKey = SigningKey
+		ValidateIssuer = false, // 验证发行商
+		ValidateAudience = false, // 验证应用者
+		ValidateLifetime = true, // 验证是否过期
+		ValidateIssuerSigningKey = true, // 验证 key
+		IssuerSigningKey = SigningKey,
+
 	};
 });
-
 
 // 对 OpenAPI 进行配置，之后 Swagger UI 右上角会增加一个全局请求头 Authorization 配置按钮。
 builder.Services.AddSwaggerGen(options => {
@@ -159,7 +163,6 @@ builder.Services.AddLogging(builder =>
 });
 
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -178,9 +181,14 @@ app.UseStaticFiles();
 app.UseCors();
 
 // 在 app.UseAuthorization() 前添加 app.UseAuthentication() 中间件;
+// 尝试对用户进行身份验证，然后才会允许用户访问安全资源。
 app.UseAuthentication();
 
+// 用于授权用户访问安全资源的授权中间件
 app.UseAuthorization();
+
+// 注册自定义中间件
+app.UseMiddleware<JWTMiddleware>();
 
 app.MapControllers();
 

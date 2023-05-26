@@ -19,3 +19,5 @@ E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.Infrastructure\bin\Debug\net6.0\ZZ.Do
 E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.Infrastructure\obj\Debug\net6.0\ZZ.Infrastructure.genruntimeconfig.cache
 E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.Infrastructure\bin\Debug\net6.0\ZZ.Commons.dll
 E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.Infrastructure\bin\Debug\net6.0\ZZ.Commons.pdb
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.Infrastructure\bin\Debug\net6.0\ZZ.JWT.dll
+E:\Project_List\SeeSharp\ZZ.PersonnelMS\ZZ.Infrastructure\bin\Debug\net6.0\ZZ.JWT.pdb

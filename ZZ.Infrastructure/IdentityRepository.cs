@@ -6,7 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using ZZ.Domain.Entities.Identity;
-using ZZ.DomainCommons;
+using ZZ.JWT;
 
 namespace ZZ.Infrastructure
 {
@@ -52,14 +52,16 @@ namespace ZZ.Infrastructure
 			// 获取签名密钥
 			string key = jwtSettingsOpt.Value.SigningKey;
 			// 准备过期时间
-			DateTime expires = DateTime.Now.AddSeconds(jwtSettingsOpt.Value.ExpireSeconds);
+			//DateTime expires = DateTime.Now.AddSeconds(jwtSettingsOpt.Value.ExpireSeconds);
 			// 将指定字符串中的所有字符编码为字节序列。
 			byte[] secBytes = Encoding.UTF8.GetBytes(key);
 			// 对称安全密钥
 			var seckey = new SymmetricSecurityKey(secBytes);
 			// 定义Microsoft.IdentityModel.Tokens。用于数字签名的密钥、算法和摘要。
 			var credentials = new SigningCredentials(seckey, SecurityAlgorithms.HmacSha256Signature);
-			var tokenDescriptor = new JwtSecurityToken(claims: claims, expires: expires, signingCredentials: credentials);
+			// 不添加过期时间
+			//var tokenDescriptor = new JwtSecurityToken(claims: claims, expires: expires, signingCredentials: credentials);
+			var tokenDescriptor = new JwtSecurityToken(claims: claims, signingCredentials: credentials);
 			// JwtSecurityTokenHandler类：用于创建和验证 JWT 。WriteToken：生成 JWT。
 			string jwt = new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
 

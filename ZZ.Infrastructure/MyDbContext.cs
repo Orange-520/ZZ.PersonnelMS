@@ -24,6 +24,7 @@ namespace ZZ.Infrastructure
 		// 个人办公模块
 		public DbSet<AskForLeaveApply> AskForLeaveApplys { get; set; }
 		public DbSet<HiringNeedApply> HiringNeedApplys { get; set; }
+		public DbSet<Reply> Replys { get; set; }
 
 		// 公共模块
 		public DbSet<Department> Departments { get; set; }
