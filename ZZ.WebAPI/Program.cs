@@ -13,6 +13,7 @@ using ZZ.JWT;
 using ZZ.Infrastructure;
 using ZZ.WebAPI.Filter;
 using ZZ.WebAPI.Middleware;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,7 +46,7 @@ builder.Services.Configure<MvcOptions>(options =>
 
 
 // 跨域
-string[] url = new string[] {"http://localhost:8080"};
+string[] url = new string[] { "http://localhost:8080" };
 builder.Services.AddCors(option =>
 {
 	option.AddDefaultPolicy(nb =>
@@ -56,7 +57,8 @@ builder.Services.AddCors(option =>
 
 
 // 注册数据库上下文
-builder.Services.AddDbContext<MyDbContext>(option => {
+builder.Services.AddDbContext<MyDbContext>(option =>
+{
 	string? conn = Environment.GetEnvironmentVariable("DefaultDB:ConnStr2");
 	option.UseSqlServer(conn);
 });
@@ -66,7 +68,8 @@ builder.Services.AddDbContext<MyDbContext>(option => {
 builder.Services.AddDataProtection();
 
 // 配置 Identity
-builder.Services.AddIdentityCore<User>(options => {
+builder.Services.AddIdentityCore<User>(options =>
+{
 	// 是不是必须有数字？
 	options.Password.RequireDigit = false;
 	// 是不是必须有小写字母？
@@ -82,43 +85,63 @@ builder.Services.AddIdentityCore<User>(options => {
 	// 获取或设置用于生成帐户确认电子邮件中使用的令牌的令牌提供程序。
 	// 邮件的激活链接，生成比较简单的链接
 	options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
-});
+}).AddRoles<Role>().AddEntityFrameworkStores<MyDbContext>().AddDefaultTokenProviders();
 
-IdentityBuilder idBuilder = new IdentityBuilder(typeof(User), typeof(Role), builder.Services);
-idBuilder.AddEntityFrameworkStores<MyDbContext>()
-	// 添加默认令牌提供程序，用于为重置密码、更改电子邮件生成令牌、修改电话号码的操作因素身份验证令牌生成。
-	.AddDefaultTokenProviders()
-	// 增加角色管理器
-	.AddRoleManager<RoleManager<Role>>()
-	// 增加用户管理
-	.AddUserManager<UserManager<User>>();
+//IdentityBuilder idBuilder = new IdentityBuilder(typeof(User), typeof(Role), builder.Services);
+
+//idBuilder.AddEntityFrameworkStores<MyDbContext>()
+//	// 添加默认令牌提供程序，用于为重置密码、更改电子邮件生成令牌、修改电话号码的操作因素身份验证令牌生成。
+//	.AddDefaultTokenProviders()
+//	// 增加角色管理器
+//	.AddRoleManager<RoleManager<Role>>()
+//	// 增加用户管理
+//	.AddUserManager<UserManager<User>>();
+
 
 
 //builder.Services.AddAuthorization();
 
 // 读取appsettings.json配置文件中的信息
+// 这一句的意义是？能够让我通过 IOptions<> 获取到一个配置类实例对象，对象中蕴含着配置值？
 builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWT"));
 // 配置JWT
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
-	var jwtSettings = builder.Configuration.GetSection("JWT").Get<JWTSettings>();
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+//{
+//	var jwtSettings = builder.Configuration.GetSection("JWT").Get<JWTSettings>();
 
-	byte[] keyBytes = Encoding.UTF8.GetBytes(jwtSettings.SigningKey);
+//	byte[] keyBytes = Encoding.UTF8.GetBytes(jwtSettings.SigningKey);
 
-	var SigningKey = new SymmetricSecurityKey(keyBytes);
+//	var SigningKey = new SymmetricSecurityKey(keyBytes);
 
-	options.TokenValidationParameters = new()
+//	options.TokenValidationParameters = new()
+//	{
+//		ValidateIssuer = false, // 验证发行商
+//		ValidateAudience = false, // 验证应用者
+//		ValidateLifetime = true, // 验证是否过期
+//		ValidateIssuerSigningKey = true, // 验证 key
+//		IssuerSigningKey = SigningKey,
+
+//	};
+//});
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+	.AddJwtBearer(options =>
 	{
-		ValidateIssuer = false, // 验证发行商
-		ValidateAudience = false, // 验证应用者
-		ValidateLifetime = true, // 验证是否过期
-		ValidateIssuerSigningKey = true, // 验证 key
-		IssuerSigningKey = SigningKey,
-
-	};
-});
+		options.TokenValidationParameters = new TokenValidationParameters
+		{
+			ValidateIssuer = true,
+			ValidateAudience = true,
+			ValidateLifetime = true,
+			ValidateIssuerSigningKey = true,
+			ValidIssuer = builder.Configuration["JWT:Issuer"],
+			ValidAudience = builder.Configuration["JWT:Audience"],
+			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"]))
+		};
+	});
 
 // 对 OpenAPI 进行配置，之后 Swagger UI 右上角会增加一个全局请求头 Authorization 配置按钮。
-builder.Services.AddSwaggerGen(options => {
+builder.Services.AddSwaggerGen(options =>
+{
 	var scheme = new OpenApiSecurityScheme()
 	{
 		// 说明，描述信息
@@ -144,7 +167,8 @@ builder.Services.AddSwaggerGen(options => {
 
 
 // 注册 Redis 缓存 
-builder.Services.AddStackExchangeRedisCache(options => {
+builder.Services.AddStackExchangeRedisCache(options =>
+{
 	options.Configuration = "localhost";
 	// 设置缓存的 Key 前缀。
 	options.InstanceName = "ZZ_";
@@ -174,8 +198,16 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// 允许访问静态文件
-app.UseStaticFiles();
+string configFilePath = builder.Configuration["FilePath"];
+
+// 允许访问静态文件，并且提供 Web 根目录外的文件
+// FileProvider：用于资源定位的文件系统。
+// RequestPath：映射到静态资源的相对请求路径。
+app.UseStaticFiles(new StaticFileOptions
+{
+	FileProvider = new PhysicalFileProvider(configFilePath),
+	RequestPath = "/image"
+});
 
 // 配置跨域，放在 app.UseAuthorization() 中间件前
 app.UseCors();

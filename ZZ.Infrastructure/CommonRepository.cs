@@ -83,8 +83,12 @@ namespace ZZ.Infrastructure
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public ValueTask<Position?> FindPositionAsync(int id)
+		public ValueTask<Position?> FindPositionAsync(int? id)
 		{
+			if (id == null)
+			{
+				throw new Exception("职位编号不能为空");
+			}
 			return this.dbContext.Positions.FindAsync(id);
 		}
 

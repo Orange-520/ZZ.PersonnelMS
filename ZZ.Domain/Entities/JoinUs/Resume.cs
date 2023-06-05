@@ -1,4 +1,6 @@
 ﻿using ZZ.Domain.Entities.Commons;
+using ZZ.Domain.Entities.Identity;
+using ZZ.Domain.Entities.Office;
 using ZZ.Domain.ValueObjects;
 
 namespace ZZ.Domain.Entities.JoinUs
@@ -8,15 +10,7 @@ namespace ZZ.Domain.Entities.JoinUs
 	/// </summary>
 	public record Resume : PersonalInformationBase
 	{
-		/// <summary>
-		/// 应聘部门
-		/// </summary>
-		public Department Department { get; set; }
-
-		/// <summary>
-		/// 应聘职位
-		/// </summary>
-		public Position Position { get; set; }
+		public HiringNeedApply? HiringNeedApply { get; set; }
 
 		/// <summary>
 		/// 期望薪资
@@ -26,7 +20,7 @@ namespace ZZ.Domain.Entities.JoinUs
 		/// <summary>
 		/// 应聘者处在哪个环节
 		/// </summary>
-		public JoinUsStep JoinUsStep { get; set; }
+		public JoinUsStep JoinUsStep { get; set; } = JoinUsStep.简历筛选;
 
 		/// <summary>
 		/// 招聘状态

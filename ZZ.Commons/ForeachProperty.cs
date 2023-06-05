@@ -4,6 +4,13 @@ namespace ZZ.Commons
 {
 	public static class ForeachProperty
 	{
+		/// <summary>
+		/// 通过反射初始化一个对象。
+		/// </summary>
+		/// <typeparam name="TIn"></typeparam>
+		/// <typeparam name="TOut"></typeparam>
+		/// <param name="tIn"></param>
+		/// <returns></returns>
 		public static TOut TransReflection<TIn, TOut>(TIn tIn)
 		{
 			// 获取对象实例

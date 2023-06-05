@@ -39,7 +39,7 @@ namespace ZZ.WebAPI.Controllers.Office.UserApply
 		{
 			// 获取申请人的 Guid
 			string guid = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-			User user = await this.identityRepository.GetByUserAsync(guid);
+			User user = await this.identityRepository.GetByUserIdAsync(guid);
 			if (user == null)
 			{
 				return StatusCode(400, new { code = 400, msg = "发送此请求的用户不存在" });
@@ -86,14 +86,14 @@ namespace ZZ.WebAPI.Controllers.Office.UserApply
 		{
 			// 获取申请人的 Guid
 			string guid = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-			User user = await this.identityRepository.GetByUserAsync(guid);
+			User user = await this.identityRepository.GetByUserIdAsync(guid);
 			if (user == null)
 			{
 				return StatusCode(400, new { code = 400, msg = "发送此请求的用户不存在" });
 			}
 
 			// 获取审核人的Guid
-			User checkUser = await this.identityRepository.GetByUserAsync(req.CheckUser);
+			User checkUser = await this.identityRepository.GetByUserIdAsync(req.CheckUser);
 			if (checkUser == null)
 			{
 				return StatusCode(400, new { code = 400, msg = "审核人不存在" });
@@ -134,7 +134,7 @@ namespace ZZ.WebAPI.Controllers.Office.UserApply
 				return StatusCode(400, new { code = 400, msg = "请携带正确的token" });
 			}
 
-			User user = await this.identityRepository.GetByUserAsync(claim.Value);
+			User user = await this.identityRepository.GetByUserIdAsync(claim.Value);
 			if (user == null)
 			{
 				return StatusCode(400, new { code = 400, msg = "发送此请求的用户不存在" });

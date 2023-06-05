@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ZZ.Domain.Entities.Commons;
+using ZZ.Domain.Entities.Identity;
 using ZZ.Domain.Entities.JoinUs;
 
 namespace ZZ.Infrastructure.Configs
@@ -13,6 +14,7 @@ namespace ZZ.Infrastructure.Configs
 
 			builder.Property(e => e.SalaryExpectation).HasColumnType("money");
 			builder.HasOne<Position>(e => e.Position).WithMany().OnDelete(DeleteBehavior.Restrict);
+			builder.HasOne<User>(e=>e.CheckUser).WithMany().OnDelete(DeleteBehavior.Restrict);
 		}
 	}
 }

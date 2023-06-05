@@ -9,6 +9,7 @@
         public string Content { get; set; }
         public int NeedPersonCount { get; set; }
         public int HasPersonCount { get; set; }
+        public List<ZZ.Domain.Entities.JoinUs.Resume>? ResumeList { get; set; } = new List<Domain.Entities.JoinUs.Resume>();
     }
     public class MinDepartment
     {
@@ -20,4 +21,5 @@
         public int Id { get; set; }
         public string PositionName { get; set; }
     }
+    
 }

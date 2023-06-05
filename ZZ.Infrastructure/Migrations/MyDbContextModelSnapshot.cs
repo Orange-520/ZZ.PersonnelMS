@@ -397,19 +397,26 @@ namespace ZZ.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Avatar")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AvatarFileSHA256Hash")
+                        .HasMaxLength(64)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(64)");
 
                     b.Property<DateTime?>("Birthday")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("CheckUserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("CurrentAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CurrentEducation")
+                    b.Property<int>("CurrentEducation")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DateOfConfirmationAfterProbation")
+                    b.Property<DateTime?>("DateOfConfirmationAfterProbation")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("DepartmentId")
@@ -424,7 +431,7 @@ namespace ZZ.Infrastructure.Migrations
                     b.Property<string>("EmergencyContactPhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EntryTime")
+                    b.Property<DateTime>("EntryTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Gender")
@@ -437,7 +444,6 @@ namespace ZZ.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IdCardPicture")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("InterestsAndTalents")
@@ -458,7 +464,7 @@ namespace ZZ.Infrastructure.Migrations
                     b.Property<string>("Major")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("MaritalStatus")
+                    b.Property<int>("MaritalStatus")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -475,7 +481,7 @@ namespace ZZ.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PoliticsStatus")
+                    b.Property<int>("PoliticsStatus")
                         .HasColumnType("int");
 
                     b.Property<int>("PositionId")
@@ -491,17 +497,17 @@ namespace ZZ.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SocialSecurityCardNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TypeOfSocialSecurity")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CheckUserId");
 
                     b.HasIndex("DepartmentId");
 
@@ -523,10 +529,13 @@ namespace ZZ.Infrastructure.Migrations
                     b.Property<DateTime?>("Birthday")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("CheckUserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("CurrentAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CurrentEducation")
+                    b.Property<int>("CurrentEducation")
                         .HasColumnType("int");
 
                     b.Property<int>("DepartmentId")
@@ -571,7 +580,7 @@ namespace ZZ.Infrastructure.Migrations
                     b.Property<string>("Major")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("MaritalStatus")
+                    b.Property<int>("MaritalStatus")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -585,7 +594,7 @@ namespace ZZ.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PoliticsStatus")
+                    b.Property<int>("PoliticsStatus")
                         .HasColumnType("int");
 
                     b.Property<int>("PositionId")
@@ -604,6 +613,8 @@ namespace ZZ.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CheckUserId");
 
                     b.HasIndex("DepartmentId");
 
@@ -978,6 +989,12 @@ namespace ZZ.Infrastructure.Migrations
 
             modelBuilder.Entity("ZZ.Domain.Entities.JoinUs.Record", b =>
                 {
+                    b.HasOne("ZZ.Domain.Entities.Identity.User", "CheckUser")
+                        .WithMany()
+                        .HasForeignKey("CheckUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("ZZ.Domain.Entities.Commons.Department", "Department")
                         .WithMany()
                         .HasForeignKey("DepartmentId")
@@ -992,7 +1009,11 @@ namespace ZZ.Infrastructure.Migrations
 
                     b.HasOne("ZZ.Domain.Entities.Identity.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CheckUser");
 
                     b.Navigation("Department");
 
@@ -1003,13 +1024,19 @@ namespace ZZ.Infrastructure.Migrations
 
             modelBuilder.Entity("ZZ.Domain.Entities.JoinUs.Resume", b =>
                 {
+                    b.HasOne("ZZ.Domain.Entities.Identity.User", "CheckUser")
+                        .WithMany()
+                        .HasForeignKey("CheckUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("ZZ.Domain.Entities.Commons.Department", "Department")
                         .WithMany()
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ZZ.Domain.Entities.Office.HiringNeedApply", null)
+                    b.HasOne("ZZ.Domain.Entities.Office.HiringNeedApply", "HiringNeedApply")
                         .WithMany("CurrentResumes")
                         .HasForeignKey("HiringNeedApplyId");
 
@@ -1019,7 +1046,11 @@ namespace ZZ.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("CheckUser");
+
                     b.Navigation("Department");
+
+                    b.Navigation("HiringNeedApply");
 
                     b.Navigation("Position");
                 });

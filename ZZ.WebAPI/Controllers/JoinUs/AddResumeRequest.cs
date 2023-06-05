@@ -2,8 +2,9 @@
 
 namespace ZZ.WebAPI.Controllers.JoinUs
 {
-	public class ResumeRequest
+	public class AddResumeRequest
 	{
+		public int? HiringNeedApplyId { get; set; }
 		public string Name { get; set; }
 		public Gender Gender { get; set; }
 		public string PhoneNumber { get; set; }
@@ -74,6 +75,7 @@ namespace ZZ.WebAPI.Controllers.JoinUs
 		/// 紧急联系人号码
 		/// </summary>
 		public string? EmergencyContactPhoneNumber { get; set; }
+
 		/// <summary>
 		/// 应聘部门
 		/// </summary>
@@ -92,101 +94,5 @@ namespace ZZ.WebAPI.Controllers.JoinUs
 		public List<MinWorkHistory> MinWorkHistory { get; set; } = new List<MinWorkHistory>();
 		public List<MinEducationHistory> MinEducationHistory { get; set; } = new List<MinEducationHistory>();
 		public List<MinCertificate> MinCertificate { get; set; } = new List<MinCertificate> { };
-	}
-	public class MinWorkHistory
-	{
-		public DateTime StartTime { get; set; }
-		public DateTime EndTime { get; set; }
-
-		/// <summary>
-		/// 公司名称
-		/// </summary>
-		public string CompanyName { get; set; }
-		public string CompanyAddress { get; set; }
-
-		/// <summary>
-		/// 担任职位
-		/// </summary>
-		public string Position { get; set; }
-
-		/// <summary>
-		/// 离职原因
-		/// </summary>
-		public string? DimissionCause { get; set; }
-
-		/// <summary>
-		/// 最大收获
-		/// </summary>
-		public string? BiggestGain { get; set; }
-	}
-	public class MinEducationHistory
-	{
-		public string SchoolName { get; set; }
-		public CurrentEducation CurrentEducation { get; set; }
-
-		/// <summary>
-		/// 专业
-		/// </summary>
-		public string? Major { get; set; }
-
-		/// <summary>
-		/// 入学时间
-		/// </summary>
-		public DateTime StartTime { get; set; }
-
-		/// <summary>
-		/// 毕业时间
-		/// </summary>
-		public DateTime EndTime { get; set; }
-
-		/// <summary>
-		/// 学位
-		/// </summary>
-		public Degree? Degree { get; set; }
-
-		/// <summary>
-		/// 学位授予时间
-		/// </summary>
-		public DateTime? DegreeCreateTime { get; set; }
-		public LearningStyle LearningStyle { get; set; }
-		public float Score { get; set; }
-
-		/// <summary>
-		/// 备注
-		/// </summary>
-		public string? Remark { get; set; }
-	}
-
-	/// <summary>
-	/// 证书
-	/// </summary>
-	public class MinCertificate
-	{
-		public string Name { get; set; }
-
-		/// <summary>
-		/// 证书获取时间
-		/// </summary>
-		public DateTime GetTime { get; set; }
-
-		/// <summary>
-		/// 级别
-		/// </summary>
-		public string Level { get; set; }
-
-		/// <summary>
-		/// 证书编号
-		/// </summary>
-		public string CertificateNumber { get; set; }
-
-		/// <summary>
-		/// 颁发机构
-		/// </summary>
-		public string Organization { get; set; }
-
-		/// <summary>
-		/// 备注
-		/// </summary>
-		public string? Remark { get; set; }
 	}
 }

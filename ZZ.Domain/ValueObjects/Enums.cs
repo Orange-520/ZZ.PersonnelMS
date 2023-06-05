@@ -139,6 +139,9 @@
 		Spinsterhood
 	}
 
+	/// <summary>
+	/// 政治面貌
+	/// </summary>
 	public enum PoliticsStatus
 	{
 		/// <summary>
@@ -161,6 +164,9 @@
 		群众
 	}
 
+	/// <summary>
+	/// 求职方式
+	/// </summary>
 	public enum JobHuntingMode
 	{
 		None,
@@ -170,6 +176,9 @@
 		亲戚朋友推荐
 	}
 
+	/// <summary>
+	/// 当前学历
+	/// </summary>
 	public enum CurrentEducation
 	{
 		None,

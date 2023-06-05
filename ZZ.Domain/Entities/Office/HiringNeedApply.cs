@@ -11,12 +11,12 @@ namespace ZZ.Domain.Entities.Office
 	public record HiringNeedApply : ApplyBase
 	{
 		/// <summary>
-		/// 应聘部门
+		/// 需求部门
 		/// </summary>
 		public Department Department { get; set; }
 
 		/// <summary>
-		/// 岗位
+		/// 需求岗位
 		/// </summary>
 		public Position Position { get; set; }
 		public int NeedPersonCount { get; set; }

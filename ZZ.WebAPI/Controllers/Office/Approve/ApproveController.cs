@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using ZZ.Commons;
 using ZZ.Domain.Entities.Identity;
@@ -10,7 +9,7 @@ using ZZ.WebAPI.Filter;
 
 namespace ZZ.WebAPI.Controllers.Office.Approve
 {
-    [Route("Office/[controller]/[action]")]
+	[Route("Office/[controller]/[action]")]
 	[ApiController]
 	public class ApproveController : ControllerBase
 	{
@@ -76,7 +75,7 @@ namespace ZZ.WebAPI.Controllers.Office.Approve
 		{
 			// 获取申请人的 Guid
 			string checkUserGuid = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-			User checkUser = await this.identitRepository.GetByUserAsync(checkUserGuid);
+			User checkUser = await this.identitRepository.GetByUserIdAsync(checkUserGuid);
 			if (checkUser == null)
 			{
 				return StatusCode(400, new { code = 400, msg = "处理此审核的用户不存在" });

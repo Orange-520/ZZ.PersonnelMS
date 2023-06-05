@@ -1,10 +1,11 @@
 ﻿using ZZ.Domain.Entities.Commons;
+using ZZ.Domain.Entities.Identity;
 using ZZ.Domain.ValueObjects;
 
 namespace ZZ.Domain.Entities.JoinUs
 {
 	/// <summary>
-	/// 基类，实现个人信息
+	/// 基类，实现个人信息，放置公共信息，减少属性污染
 	/// </summary>
 	public record PersonalInformationBase
 	{
@@ -12,6 +13,22 @@ namespace ZZ.Domain.Entities.JoinUs
 		public List<WorkHistory> WorkHistory { get; set; } = new List<WorkHistory>();
 		public List<EducationHistory> EducationHistory { get; set; } = new List<EducationHistory>();
 		public List<Certificate> Certificate { get; set; } = new List<Certificate>();
+
+		/// <summary>
+		/// 部门
+		/// </summary>
+		public Department Department { get; set; }
+
+		/// <summary>
+		/// 职位
+		/// </summary>
+		public Position Position { get; set; }
+
+		/// <summary>
+		/// 处理人
+		/// </summary>
+		public User CheckUser { get; set; }
+
 		public string Name { get; set; }
 		public Gender Gender { get; set; }
 		public string PhoneNumber { get; set; }
@@ -26,16 +43,16 @@ namespace ZZ.Domain.Entities.JoinUs
 		/// <summary>
 		/// 婚姻状况
 		/// </summary>
-		public MaritalStatus? MaritalStatus { get; set; }
+		public MaritalStatus MaritalStatus { get; set; } = MaritalStatus.None;
 		public string? Email { get; set; }
 		public DateTime? Birthday { get; set; }
-		public PoliticsStatus? PoliticsStatus { get; set; }
+		public PoliticsStatus PoliticsStatus { get; set; } = PoliticsStatus.None;
 
 		/// <summary>
 		/// 毕业学校
 		/// </summary>
 		public string? SchoolOfGraduation { get; set; }
-		public CurrentEducation? CurrentEducation { get; set; }
+		public CurrentEducation CurrentEducation { get; set; } = CurrentEducation.None;
 
 		/// <summary>
 		/// 专业
