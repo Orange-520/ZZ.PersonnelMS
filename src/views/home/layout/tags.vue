@@ -97,6 +97,8 @@ export default {
   display: flex;
   justify-content: space-between;
 
+  // z-index: 1;
+
   & > div {
     width: 40px;
     height: 40px;

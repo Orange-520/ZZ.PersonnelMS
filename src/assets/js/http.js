@@ -1,8 +1,12 @@
 import axios from "axios";
 import { Message } from 'element-ui';
 
+// 引入仓库下的store.js文件
+import store from "@/store/store.js";
+
 const instance  = axios.create({
-  baseURL: 'https://localhost:7147',
+  // 对象的一种访问方式
+  baseURL: store.getters['baseURL'],
   timeout: 5000,
   headers: {'Authorization': "Bearer "+window.localStorage.getItem('token')}
 });

@@ -59,7 +59,7 @@ li {
 }
 
 /* 滚动条 */
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 1px;
   height: 1px;
 }
@@ -71,5 +71,5 @@ li {
   box-shadow: inset 0 0 5px rgb(217, 236, 255,0);
   background: #ededed00;
   border-radius: 5px;
-}
+} */
 </style>

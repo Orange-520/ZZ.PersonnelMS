@@ -14,7 +14,10 @@ const notice = () => import("@/views/home/layout/office/notice.vue");
 
 const noticePublish = () => import("@/views/home/layout/notice/notice-publish.vue");
 
-const addRecord = () => import("@/views/home/layout/record/add-record.vue");
+const recordList = () => import("@/views/home/layout/record/record-list.vue");
+const recordListComponent = ()=>import("@/views/home/layout/record/record-list-component.vue");
+const addRecordComponent = ()=>import("@/views/home/layout/record/add-record-component.vue");
+
 const dimissionList = () => import("@/views/home/layout/record/dimission-list.vue");
 
 const hiringNeedsList = () => import("@/views/home/layout/join-us/hiring-needs-list.vue");
@@ -89,8 +92,19 @@ export default new VueRouter({
 					component:noticePublish
 				},
 				{
-					path:'record/addRecord',
-					component:addRecord
+					path:'record/recordList',
+					component:recordList,
+					redirect:'record/recordList/recordListComponent',
+					children:[
+						{
+							path:'recordListComponent',
+							component:recordListComponent
+						},
+						{
+							path:'addRecordComponent',
+							component:addRecordComponent
+						},
+					]
 				},
 				{
 					path:'record/dimissionList',

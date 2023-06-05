@@ -18,12 +18,86 @@
       <el-table
         class="table-box"
         :data="tableData"
-        border
         style="width: 100%"
         :fit="true"
         :cell-style="{ 'text-align': 'center', width: 'auto' }"
         :header-cell-style="{ 'text-align': 'center' }"
       >
+        <el-table-column type="expand">
+          <template slot-scope="props">
+            <el-table
+              :data="props.row.resumeList"
+              border
+              stripe
+              style="width: 100%"
+              :fit="true"
+              :cell-style="{ 'text-align': 'center', width: 'auto' }"
+              :header-cell-style="{ 'text-align': 'center' }"
+            >
+              <el-table-column label="" width="70" align="left">
+                <template slot-scope="scope">
+                  {{ scope.$index + 1 }}
+                </template>
+              </el-table-column>
+
+              <el-table-column prop="name" label="姓名"></el-table-column>
+
+              <el-table-column
+                prop="gender"
+                label="性别"
+                :formatter="genderColumnFormatter"
+              ></el-table-column>
+
+              <el-table-column
+                prop="department.name"
+                label="应聘部门"
+              ></el-table-column>
+
+              <el-table-column prop="position.name" label="应聘职位"></el-table-column>
+
+              <el-table-column
+                prop="phoneNumber"
+                label="手机号码"
+                width="120"
+              ></el-table-column>
+
+              <el-table-column
+                prop="email"
+                label="邮箱"
+                width="120"
+              ></el-table-column>
+
+              <el-table-column
+                prop="joinUsStep"
+                label="当前环节"
+                :formatter="joinUsStepColumnFormatter"
+              ></el-table-column>
+
+              <el-table-column
+                prop="checkUser.userName"
+                label="当前处理人"
+              ></el-table-column>
+
+              <el-table-column fixed="right" label="操作" width="200px">
+                <template slot-scope="scope">
+                  <el-button
+                    type="success"
+                    size="small"
+                    @click="joinUsStepRuleForm.resumeId = scope.row.id ;joinUsStepRuleForm.joinUsStep = scope.row.joinUsStep; joinUsStepDialogVisible = true;"
+                    >环节处理</el-button
+                  >
+                  <el-button
+                    type="danger"
+                    size="small"
+                    @click="joinUsResultRuleForm.resumeId = scope.row.id ; joinUsResultDialogVisible = true;"
+                    >结果处理</el-button
+                  >
+                </template>
+              </el-table-column>
+            </el-table>
+          </template>
+        </el-table-column>
+
         <el-table-column label="" width="70" align="left">
           <template slot-scope="scope">
             {{
@@ -57,19 +131,21 @@
           label="已招聘人数"
         ></el-table-column>
 
-        <el-table-column fixed="right" label="操作" width="200px">
+        <el-table-column
+          label="应聘人数"
+        >
+          <template slot-scope="props">
+            <span>{{props.row.resumeList.length}}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
             <el-button
               type="primary"
               size="small"
-              @click="showDialogRepertory(scope.row)"
+              @click="addResume(scope.row)"
               >应聘登记</el-button
-            >
-            <el-button
-              type="danger"
-              size="small"
-              @click="showDialogRepertory(scope.row)"
-              >详情</el-button
             >
           </template>
         </el-table-column>
@@ -91,14 +167,135 @@
       >
       </el-pagination>
     </div>
+
+    <!-- 环节处理对话框 -->
+      <el-dialog
+        title="应聘环节处理"
+        :visible.sync="joinUsStepDialogVisible"
+        center
+        width="400px"
+        @close="closeDialog"
+        :modal-append-to-body="false"
+      >
+        <div class="dialog_content">
+          <el-form
+            :model="joinUsStepRuleForm"
+            :rules="joinUsStepRules"
+            :hide-required-asterisk="false"
+            ref="joinUsStepRuleForm"
+            label-width="auto"
+            label-position="left"
+          >
+            <el-form-item label="应聘环节" prop="joinUsStep">
+              <el-select
+                v-model="joinUsStepRuleForm.joinUsStep"
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="option in joinUsStepConfig"
+                  :key="option.value"
+                  :label="option.label"
+                  :value="option.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
+        </div>
+
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="joinUsStepDialogVisible = false"
+            >取 消</el-button
+          >
+          <el-button
+            type="primary"
+            @click="changeJoinUsStep('joinUsStepRuleForm')"
+            >改 变 环 节</el-button
+          >
+        </div>
+      </el-dialog>
+
+       <!-- 应聘结果对话框 -->
+      <el-dialog
+        title="应聘结果处理"
+        :visible.sync="joinUsResultDialogVisible"
+        center
+        width="400px"
+        @close="closeDialog"
+        :modal-append-to-body="false"
+      >
+        <div class="dialog_content">
+          <el-form
+            :model="joinUsResultRuleForm"
+            :rules="joinUsResultRules"
+            :hide-required-asterisk="false"
+            ref="joinUsResultRuleForm"
+            label-width="auto"
+            label-position="left"
+          >
+            <el-form-item label="应聘环节" prop="joinUsResult">
+              <el-select
+                v-model="joinUsResultRuleForm.joinUsResult"
+                style="width: 100%"
+                @change="clearValidate('joinUsResultRuleForm', 'joinUsResult')"
+              >
+                <el-option
+                  v-for="option in joinUsResultConfig"
+                  :key="option.value"
+                  :label="option.label"
+                  :value="option.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
+        </div>
+
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="joinUsResultDialogVisible = false"
+            >取 消</el-button
+          >
+          <el-button
+            type="primary"
+            @click="changeJoinUsResult('joinUsResultRuleForm')"
+            >应 聘 结 果</el-button
+          >
+        </div>
+      </el-dialog>
   </div>
 </template>
 
 <script>
 import { GetHiringNeedApply } from "@/https/join-us/hiringNeedApply.js";
+import {ChangeJoinUsStep,ChangeJoinUsResult} from '@/https/join-us/resumeList.js'
 export default {
   data() {
+    // 应聘环节
+    const joinUsStepConfig = [
+        {label:'简历筛选',value:1},
+        {label:'初试',value:2},
+        {label:'面试',value:3},
+        {label:'背景调查',value:4},
+        {label:'终面',value:5},
+        {label:'录用决策中',value:6},
+        {label:'发出录用通知书',value:7},
+        {label:'入职培训',value:8},
+        {label:'跟踪反馈',value:9}
+    ];
+    // 应聘结果
+    const joinUsResultConfig = [
+        {label:'入职',value:1},
+        {label:'放入人才库',value:2},
+        {label:'放入资料库',value:3},
+        {label:'不合格',value:4}
+    ];
     return {
+      joinUsStepConfig,
+      joinUsResultConfig,
+
+      joinUsStepDialogVisible:false,
+      joinUsResultDialogVisible:false,
+      
       tableData:[],
       total:0,
       // 多少条每页
@@ -108,12 +305,37 @@ export default {
         pageSize: 10,
         positionWordKey: "",
       },
+
+      joinUsStepRuleForm:{
+        resumeId: null,
+        joinUsStep: null
+      },
+      joinUsStepRules:{
+         joinUsStep: [{ required: true, message: "请选择应聘环节", trigger: "blur" }],
+      },
+
+      joinUsResultRuleForm:{
+        resumeId: null,
+        joinUsResult: null
+      },
+      joinUsResultRules:{
+         joinUsResult: [{ required: true, message: "请选择处理结果", trigger: "blur" }],
+      }
     };
   },
   created() {
     this.GetData();
   },
   methods: {
+    // 点击应聘登记时，跳转页面并将当前的招聘需求Id传递
+    addResume(row){
+      // 路由传递参数
+      this.$router.push({path:'/home/joinUs/addResume',query:{
+        HiringNeedApplyId:row.id,
+        minDepartment:row.minDepartment,
+        minPosition:row.minPosition
+      }});
+    },
     // pageSize改变时调用
     handleSizeChange(val) {
       // 改变每页显示条目个数
@@ -133,7 +355,85 @@ export default {
           this.tableData = res.data;
         })
         .catch(() => {});
-    }
+    },
+    // 处理性别列
+    genderColumnFormatter(row, column, cellValue, index){
+      const genderConfig = [
+        {label:'',value:0},
+        {label:'男',value:1},
+        {label:'女',value:2}
+      ];
+      for (const item of genderConfig) {
+        if (item.value === cellValue) {
+          return item.label;
+        }
+      }
+    },
+    // 处理招聘环节列
+    joinUsStepColumnFormatter(row, column, cellValue, index){
+      for (const item of this.joinUsStepConfig) {
+        if (item.value === cellValue) {
+          return item.label;
+        }
+      }
+    },
+    closeDialog(){},
+    // 处理应聘环节
+    changeJoinUsStep(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          ChangeJoinUsStep(this.joinUsStepRuleForm).then(res=>{
+            this.$message.success(res.msg);
+            this.GetData();
+            this.joinUsStepDialogVisible = false;
+          }).catch(()=>{});
+        } else {
+          this.$message.error("有未完善的信息，请完善");
+          return false;
+        }
+      });
+    },
+    // 处理应聘结果
+    changeJoinUsResult(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          // 如果选择不合格，则弹出提示
+          if (this.joinUsResultRuleForm.joinUsResult === 4) {
+            this.$confirm('此操作将移除此应聘简历！', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(()=>{
+              // 改变应聘结果
+              ChangeJoinUsResult(this.joinUsResultRuleForm).then(res=>{
+                this.$message.success(res.msg);
+                this.GetData();
+                this.joinUsResultDialogVisible = false;
+              }).catch(()=>{});
+            }).catch(() => {
+              return;
+            });
+          }else{
+            // 改变应聘结果
+            ChangeJoinUsResult(this.joinUsResultRuleForm).then(res=>{
+              this.$message.success(res.msg);
+              this.GetData();
+              this.joinUsResultDialogVisible = false;
+            }).catch(()=>{});
+          }
+          
+        } else {
+          this.$message.error("有未完善的信息，请完善");
+          return false;
+        }
+      });
+    },
+    // 清除某一项表单的验证，主要用于select表单控件
+    clearValidate(formName, prop) {
+      if (this[formName][prop] != "" && this[formName][prop] != null) {
+        this.$refs[formName].clearValidate([prop]);
+      }
+    },
   },
 };
 </script>
