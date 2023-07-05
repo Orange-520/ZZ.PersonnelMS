@@ -85,8 +85,9 @@
                 label="当前处理人"
               ></el-table-column>
 
-              <el-table-column fixed="right" label="操作" width="200px">
+              <el-table-column fixed="right" label="操作" width="260px">
                 <template slot-scope="scope">
+                  <el-button type="primary" size="small">详情</el-button>
                   <el-button
                     type="success"
                     size="small"
@@ -102,6 +103,7 @@
                     size="small"
                     @click="
                       joinUsResultRuleForm.resumeId = scope.row.id;
+                      resume = scope.row;
                       joinUsResultDialogVisible = true;
                     "
                     >结果处理</el-button
@@ -158,7 +160,7 @@
               @click="
                 $router.push({
                   name: 'addResume',
-                  query:{
+                  query: {
                     hiringNeedApplyId: scope.row.id,
                     departmentId: scope.row.minDepartment.id,
                     positionId: scope.row.minPosition.id,
@@ -172,97 +174,26 @@
       </el-table>
 
       <!-- 环节处理对话框 -->
-      <el-dialog
+      <OneColumnDialog
         title="应聘环节处理"
         :visible.sync="joinUsStepDialogVisible"
-        center
-        width="400px"
-        @close="closeDialog"
-        :modal-append-to-body="false"
-      >
-        <div class="dialog_content">
-          <el-form
-            :model="joinUsStepRuleForm"
-            :rules="joinUsStepRules"
-            :hide-required-asterisk="false"
-            ref="joinUsStepRuleForm"
-            label-width="auto"
-            label-position="left"
-          >
-            <el-form-item label="应聘环节" prop="joinUsStep">
-              <el-select
-                v-model="joinUsStepRuleForm.joinUsStep"
-                style="width: 100%"
-              >
-                <el-option
-                  v-for="option in joinUsStepConfig"
-                  :key="option.value"
-                  :label="option.label"
-                  :value="option.value"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-form>
-        </div>
-
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="joinUsStepDialogVisible = false">取 消</el-button>
-          <el-button
-            type="primary"
-            @click="changeJoinUsStep('joinUsStepRuleForm')"
-            >改 变 环 节</el-button
-          >
-        </div>
-      </el-dialog>
+        :ruleForm="joinUsStepRuleForm"
+        :rules="joinUsStepRules"
+        :ruleFormConfig="joinUsStepRuleFormConfig"
+        :btnFont="'改 变 环 节'"
+        @submitData="changeJoinUsStep"
+      ></OneColumnDialog>
 
       <!-- 应聘结果对话框 -->
-      <el-dialog
+      <OneColumnDialog
         title="应聘结果处理"
         :visible.sync="joinUsResultDialogVisible"
-        center
-        width="400px"
-        @close="closeDialog"
-        :modal-append-to-body="false"
-      >
-        <div class="dialog_content">
-          <el-form
-            :model="joinUsResultRuleForm"
-            :rules="joinUsResultRules"
-            :hide-required-asterisk="false"
-            ref="joinUsResultRuleForm"
-            label-width="auto"
-            label-position="left"
-          >
-            <el-form-item label="应聘环节" prop="joinUsResult">
-              <el-select
-                v-model="joinUsResultRuleForm.joinUsResult"
-                style="width: 100%"
-                @change="clearValidate('joinUsResultRuleForm', 'joinUsResult')"
-              >
-                <el-option
-                  v-for="option in joinUsResultConfig"
-                  :key="option.value"
-                  :label="option.label"
-                  :value="option.value"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-form>
-        </div>
-
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="joinUsResultDialogVisible = false"
-            >取 消</el-button
-          >
-          <el-button
-            type="primary"
-            @click="changeJoinUsResult('joinUsResultRuleForm')"
-            >应 聘 结 果</el-button
-          >
-        </div>
-      </el-dialog>
+        :ruleForm="joinUsResultRuleForm"
+        :rules="joinUsResultRules"
+        :ruleFormConfig="joinUsResultRuleFormConfig"
+        :btnFont="'应 聘 结 果'"
+        @submitData="changeJoinUsResult"
+      ></OneColumnDialog>
     </el-main>
 
     <el-footer>
@@ -283,17 +214,24 @@
 </template>
 
 <script>
+import OneColumnDialog from "@/components/one-column-dialog.vue";
 import { GetHiringNeedApply } from "@/https/join-us/hiringNeedApply.js";
 import {
   ChangeJoinUsStep,
   ChangeJoinUsResult,
 } from "@/https/join-us/resume.js";
 import config from "@/assets/js/config.js";
+import resumeConfig from "./js/resumeConfig.js";
 export default {
+  components: {
+    OneColumnDialog,
+  },
   data() {
     return {
-      joinUsStepConfig:config.joinUsStepConfig,
-      joinUsResultConfig:config.joinUsResultConfig,
+      // 应聘环节
+      joinUsStepRuleFormConfig: resumeConfig.joinUsStepRuleFormConfig,
+      // 应聘结果
+      joinUsResultRuleFormConfig: resumeConfig.joinUsResultRuleFormConfig,
 
       joinUsStepDialogVisible: false,
       joinUsResultDialogVisible: false,
@@ -307,6 +245,8 @@ export default {
         pageSize: 10,
         positionWordKey: "",
       },
+
+      resume:{},
 
       joinUsStepRuleForm: {
         resumeId: null,
@@ -363,74 +303,72 @@ export default {
     },
     // 格式化表格招聘环节列
     joinUsStepColumnFormatter(row, column, cellValue, index) {
-      for (const item of this.joinUsStepConfig) {
+      for (const item of config.joinUsStepConfig) {
         if (item.value === cellValue) {
           return item.label;
         }
       }
     },
-    closeDialog() {},
     // 处理应聘环节
-    changeJoinUsStep(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          ChangeJoinUsStep(this.joinUsStepRuleForm)
-            .then((res) => {
-              this.$message.success(res.msg);
-              this.GetData();
-              this.joinUsStepDialogVisible = false;
-            })
-            .catch(() => {});
-        } else {
-          this.$message.error("有未完善的信息，请完善");
-          return false;
-        }
-      });
+    changeJoinUsStep() {
+      ChangeJoinUsStep(this.joinUsStepRuleForm)
+        .then((res) => {
+          this.$message.success(res.msg);
+          this.GetData();
+          this.joinUsStepDialogVisible = false;
+        })
+        .catch(() => {});
     },
     // 处理应聘结果
-    changeJoinUsResult(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          // 如果选择不合格，则弹出提示
-          if (this.joinUsResultRuleForm.joinUsResult === 4) {
-            this.$confirm("此操作将移除此应聘简历！", "提示", {
-              confirmButtonText: "确定",
-              cancelButtonText: "取消",
-              type: "warning",
-            })
-              .then(() => {
-                // 改变应聘结果
-                ChangeJoinUsResult(this.joinUsResultRuleForm)
-                  .then((res) => {
-                    this.$message.success(res.msg);
-                    this.GetData();
-                    this.joinUsResultDialogVisible = false;
-                  })
-                  .catch(() => {});
-              })
-              .catch(() => {
-                return;
-              });
-          } else {
+    changeJoinUsResult() {
+      // 如果选择不合格，则弹出提示
+      if (this.joinUsResultRuleForm.joinUsResult === 4) {
+        this.$confirm("此操作将移除此应聘简历！", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
+          .then(() => {
             // 改变应聘结果
             ChangeJoinUsResult(this.joinUsResultRuleForm)
-              .then(res => {
+              .then((res) => {
                 this.$message.success(res.msg);
                 this.GetData();
                 this.joinUsResultDialogVisible = false;
+                // 关闭对话框后重置提交表单对象中的内容
+                this.joinUsResultRuleForm.joinUsResult = null;
               })
               .catch(() => {});
-          }
+          })
+          .catch(() => {
+            return;
+          });
+      } else {
+        // 如果为入职，则跳转到添加档案页面
+        if (this.joinUsResultRuleForm.joinUsResult === 1) {
+          this.$store.commit("resume/RESUME", this.resume);
+          this.$store.commit(
+            "resume/JOINUSRESULTRULEFORM",
+            this.joinUsResultRuleForm
+          );
+          this.$router.push({
+            name: "addRecord",
+            query: {
+              from: "fromResumeList",
+            },
+          });
         } else {
-          this.$message.error("有未完善的信息，请完善");
-          return false;
+          // 改变应聘结果
+          ChangeJoinUsResult(this.joinUsResultRuleForm)
+            .then((res) => {
+              this.$message.success(res.msg);
+              this.GetData();
+              this.joinUsResultDialogVisible = false;
+              // 关闭对话框后重置提交表单对象中的内容
+              this.joinUsResultRuleForm.joinUsResult = null;
+            })
+            .catch(() => {});
         }
-      });
-    },
-    // 清除某一项表单的验证，主要用于select表单控件
-    clearValidate(formName, prop) {
-      if (this[formName][prop] != "" && this[formName][prop] != null) {
-        this.$refs[formName].clearValidate([prop]);
       }
     },
   },

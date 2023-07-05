@@ -71,7 +71,7 @@
               type="primary"
               size="small"
               @click="console.log(scope.row, '信息')"
-              >编辑</el-button
+              >详情</el-button
             >
           </template>
         </el-table-column>

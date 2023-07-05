@@ -145,6 +145,12 @@ export default {
     { label: "颁发机构", prop: "organization", type: "input", span: 8 },
     { label: "备注", prop: "remark", type: "textarea", span: 8 },
   ],
+  joinUsStepRuleFormConfig: [
+    { label: "应聘环节", prop: "joinUsStep", type: "select", span: 8,optionsList:config.joinUsStepConfig }
+  ],
+  joinUsResultRuleFormConfig: [
+    { label: "应聘结果", prop: "joinUsResult", type: "select", span: 8,optionsList:config.joinUsResultConfig}
+  ],
   initRuleForm: {
     name: "",
     gender: null,

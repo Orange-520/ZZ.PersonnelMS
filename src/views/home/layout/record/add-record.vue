@@ -208,7 +208,7 @@ export default {
         nativePlace: "湖南郴州",
         idCard: "431021000000000001",
         maritalStatus: 2,
-        email: "abc@163.com",
+        email: "toomework@163.com",
         birthday: "",
         politicsStatus: 13,
         schoolOfGraduation: "湖南工程职业技术学院",
