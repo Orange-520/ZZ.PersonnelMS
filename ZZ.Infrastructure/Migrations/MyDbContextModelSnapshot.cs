@@ -140,12 +140,12 @@ namespace ZZ.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ParentDepartmenId")
+                    b.Property<int?>("ParentDepartmentId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParentDepartmenId");
+                    b.HasIndex("ParentDepartmentId");
 
                     b.ToTable("T_Departments", (string)null);
                 });
@@ -419,7 +419,7 @@ namespace ZZ.Infrastructure.Migrations
                     b.Property<DateTime?>("DateOfConfirmationAfterProbation")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
@@ -484,7 +484,7 @@ namespace ZZ.Infrastructure.Migrations
                     b.Property<int>("PoliticsStatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("PositionId")
+                    b.Property<int?>("PositionId")
                         .HasColumnType("int");
 
                     b.Property<string>("ProfessionalSkill")
@@ -538,7 +538,7 @@ namespace ZZ.Infrastructure.Migrations
                     b.Property<int>("CurrentEducation")
                         .HasColumnType("int");
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
@@ -597,7 +597,7 @@ namespace ZZ.Infrastructure.Migrations
                     b.Property<int>("PoliticsStatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("PositionId")
+                    b.Property<int?>("PositionId")
                         .HasColumnType("int");
 
                     b.Property<string>("ProfessionalSkill")
@@ -807,7 +807,7 @@ namespace ZZ.Infrastructure.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<int>("HasPersonCount")
@@ -822,7 +822,7 @@ namespace ZZ.Infrastructure.Migrations
                     b.Property<int>("NeedPersonCount")
                         .HasColumnType("int");
 
-                    b.Property<int>("PositionId")
+                    b.Property<int?>("PositionId")
                         .HasColumnType("int");
 
                     b.Property<Guid>("UserId")
@@ -942,7 +942,8 @@ namespace ZZ.Infrastructure.Migrations
                 {
                     b.HasOne("ZZ.Domain.Entities.Commons.Department", "ParentDepartmen")
                         .WithMany("ChildrenDepartment")
-                        .HasForeignKey("ParentDepartmenId");
+                        .HasForeignKey("ParentDepartmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("ParentDepartmen");
                 });
@@ -998,14 +999,12 @@ namespace ZZ.Infrastructure.Migrations
                     b.HasOne("ZZ.Domain.Entities.Commons.Department", "Department")
                         .WithMany()
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("ZZ.Domain.Entities.Commons.Position", "Position")
                         .WithMany()
                         .HasForeignKey("PositionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("ZZ.Domain.Entities.Identity.User", "User")
                         .WithMany()
@@ -1033,8 +1032,7 @@ namespace ZZ.Infrastructure.Migrations
                     b.HasOne("ZZ.Domain.Entities.Commons.Department", "Department")
                         .WithMany()
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("ZZ.Domain.Entities.Office.HiringNeedApply", "HiringNeedApply")
                         .WithMany("CurrentResumes")
@@ -1043,8 +1041,7 @@ namespace ZZ.Infrastructure.Migrations
                     b.HasOne("ZZ.Domain.Entities.Commons.Position", "Position")
                         .WithMany()
                         .HasForeignKey("PositionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("CheckUser");
 
@@ -1104,14 +1101,12 @@ namespace ZZ.Infrastructure.Migrations
                     b.HasOne("ZZ.Domain.Entities.Commons.Department", "Department")
                         .WithMany()
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("ZZ.Domain.Entities.Commons.Position", "Position")
                         .WithMany()
                         .HasForeignKey("PositionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("ZZ.Domain.Entities.Identity.User", "User")
                         .WithMany()

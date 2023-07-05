@@ -28,5 +28,20 @@
 		/// 其它部门员工
 		/// </summary>
 		public const string E = "it";
+
+		/// <summary>
+		/// admin,personnelInCharge
+		/// </summary>
+		public const string F = "admin,personnelInCharge";
+
+		/// <summary>
+		/// admin,personnelInCharge,personnel
+		/// </summary>
+		public const string G = "admin,personnelInCharge,personnel";
+
+		/// <summary>
+		/// admin,personnelInCharge,itInCharge
+		/// </summary>
+		public const string H = "admin,personnelInCharge,itInCharge";
 	}
 }

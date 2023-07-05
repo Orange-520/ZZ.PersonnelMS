@@ -8,10 +8,8 @@
     ".NETCoreApp,Version=v6.0": {
       "ZZ.WebAPI/1.0.0": {
         "dependencies": {
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.10",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "6.0.10",
           "Serilog.AspNetCore": "7.0.0",
-          "Swashbuckle.AspNetCore": "6.2.3",
           "ZZ.Commons": "1.0.0",
           "ZZ.Domain": "1.0.0",
           "ZZ.Infrastructure": "1.0.0",
@@ -1058,6 +1056,10 @@
         }
       },
       "ZZ.JWT/1.0.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.10",
+          "Swashbuckle.AspNetCore": "6.2.3"
+        },
         "runtime": {
           "ZZ.JWT.dll": {}
         }

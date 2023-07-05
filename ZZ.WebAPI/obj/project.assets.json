@@ -314,12 +314,10 @@
       "Microsoft.Extensions.ApiDescription.Server/3.0.0": {
         "type": "package",
         "build": {
-          "build/Microsoft.Extensions.ApiDescription.Server.props": {},
-          "build/Microsoft.Extensions.ApiDescription.Server.targets": {}
+          "build/_._": {}
         },
         "buildMultiTargeting": {
-          "buildMultiTargeting/Microsoft.Extensions.ApiDescription.Server.props": {},
-          "buildMultiTargeting/Microsoft.Extensions.ApiDescription.Server.targets": {}
+          "buildMultiTargeting/_._": {}
         }
       },
       "Microsoft.Extensions.Caching.Abstractions/7.0.0": {
@@ -1078,7 +1076,7 @@
           "Swashbuckle.AspNetCore.SwaggerUI": "6.2.3"
         },
         "build": {
-          "build/Swashbuckle.AspNetCore.props": {}
+          "build/_._": {}
         }
       },
       "Swashbuckle.AspNetCore.Swagger/6.2.3": {
@@ -1706,6 +1704,10 @@
       "ZZ.JWT/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.10",
+          "Swashbuckle.AspNetCore": "6.2.3"
+        },
         "compile": {
           "bin/placeholder/ZZ.JWT.dll": {}
         },
@@ -4721,10 +4723,8 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "Microsoft.AspNetCore.Authentication.JwtBearer >= 6.0.10",
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson >= 6.0.10",
       "Serilog.AspNetCore >= 7.0.0",
-      "Swashbuckle.AspNetCore >= 6.2.3",
       "ZZ.Commons >= 1.0.0",
       "ZZ.Domain >= 1.0.0",
       "ZZ.Infrastructure >= 1.0.0",
@@ -4788,10 +4788,6 @@
       "net6.0": {
         "targetAlias": "net6.0",
         "dependencies": {
-          "Microsoft.AspNetCore.Authentication.JwtBearer": {
-            "target": "Package",
-            "version": "[6.0.10, )"
-          },
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
             "target": "Package",
             "version": "[6.0.10, )"
@@ -4799,10 +4795,6 @@
           "Serilog.AspNetCore": {
             "target": "Package",
             "version": "[7.0.0, )"
-          },
-          "Swashbuckle.AspNetCore": {
-            "target": "Package",
-            "version": "[6.2.3, )"
           }
         },
         "imports": [

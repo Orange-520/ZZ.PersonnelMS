@@ -1,6 +1,6 @@
 ﻿namespace ZZ.WebAPI.Controllers.JoinUs.Resume
 {
-	public class ResumeListRequest : Paging
+	public class ResumeListRequest : PagingRequestBase
 	{
 		/// <summary>
 		/// 姓名查询关键字

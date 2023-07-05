@@ -1,19 +1,15 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json;
 using Serilog;
-using System.Text;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using ZZ.Commons;
 using ZZ.Domain.Entities.Identity;
-using ZZ.JWT;
 using ZZ.Infrastructure;
+using ZZ.JWT;
 using ZZ.WebAPI.Filter;
-using ZZ.WebAPI.Middleware;
-using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,17 +24,23 @@ builder.Services.AddControllers().AddNewtonsoftJson(option =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// 注册服务
+/* 注册范围服务 */
+// 什么是范围，就是此次请求过程中，不同类通过构造函数注入的对象，都是同一个。
 //builder.Services.AddScoped<IdentityService>();
 builder.Services.AddScoped<IdentityRepository>();
-builder.Services.AddScoped<CommonRepository>();
+builder.Services.AddScoped<DepartmentRepository>();
+builder.Services.AddScoped<PositionRepository>();
+builder.Services.AddScoped<JoinUsRepository>();
 builder.Services.AddScoped<OfficeRepository>();
 //builder.Services.AddScoped<IIdentityRepository, IdentityRepository>();
 //builder.Services.AddScoped<ICommonRepository, CommonRepository>();
 builder.Services.AddScoped<IDistributedCacheHelper, DistributedCacheHelper>();
 
+// 注册JWT生成服务
+builder.Services.AddScoped<IJWTService, JWTService>();
 
-// 注册 Filter
+
+/* 注册 Filter */
 builder.Services.Configure<MvcOptions>(options =>
 {
 	options.Filters.Add<UnitOfWorkFilter>();
@@ -46,14 +48,26 @@ builder.Services.Configure<MvcOptions>(options =>
 
 
 // 跨域
-string[] url = new string[] { "http://localhost:8080" };
-builder.Services.AddCors(option =>
+string[] cors = builder.Configuration.GetSection("Cors").GetChildren().Select(e => e.Value).ToArray()!;
+if (!cors.Any())
 {
-	option.AddDefaultPolicy(nb =>
-	{
-		nb.WithOrigins(url).AllowAnyHeader().AllowAnyMethod().AllowCredentials();
-	});
-});
+	Console.WriteLine("没有配置允许跨域访问的地址");
+}
+else
+{
+    foreach (var item in cors)
+    {
+        Console.WriteLine("CORS之允许访问的网址：{0}", item);
+    }
+    builder.Services.AddCors(option =>
+    {
+        option.AddDefaultPolicy(nb =>
+        {
+            nb.WithOrigins(cors).AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+        });
+    });
+}
+
 
 
 // 注册数据库上下文
@@ -64,8 +78,10 @@ builder.Services.AddDbContext<MyDbContext>(option =>
 });
 
 
-// 数据加密
+// 将数据保护服务添加到了依赖注入容器中，该服务可用于加密或解密应用程序中的数据。
+// 通过这种方式，可以轻松地使用 Data Protection API 来加密和保护应用程序中的敏感信息。
 builder.Services.AddDataProtection();
+
 
 // 配置 Identity
 builder.Services.AddIdentityCore<User>(options =>
@@ -99,76 +115,45 @@ builder.Services.AddIdentityCore<User>(options =>
 
 
 
-//builder.Services.AddAuthorization();
+// 获取appsettings.json配置文件中的信息
+// 方式一，配置实体类，使用实体类对应的属性获取：
+//JWTSettings jwtSettings = builder.Configuration.GetSection("JWT").Get<JWTSettings>();
 
-// 读取appsettings.json配置文件中的信息
-// 这一句的意义是？能够让我通过 IOptions<> 获取到一个配置类实例对象，对象中蕴含着配置值？
-builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWT"));
-// 配置JWT
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-//{
-//	var jwtSettings = builder.Configuration.GetSection("JWT").Get<JWTSettings>();
+// 方式二，直接获取Jwt配置项中为Issuer的属性项
+//string Issuer = builder.Configuration["JWT:Issuer"];
 
-//	byte[] keyBytes = Encoding.UTF8.GetBytes(jwtSettings.SigningKey);
 
-//	var SigningKey = new SymmetricSecurityKey(keyBytes);
+// 向服务容器（Service Container）注册一个名为JWTOptions的配置对象，它的配置信息来源于应用程序的配置文件（appsettings.json）中名为JWT的节点。
+// 在代码中使用IOptions<JWTOptions>依赖注入方式，在需要配置JWT选项的地方，就能够获取到从配置文件中读取的配置项。
+builder.Services.Configure<JWTOptions>(builder.Configuration.GetSection("JWT"));
 
-//	options.TokenValidationParameters = new()
-//	{
-//		ValidateIssuer = false, // 验证发行商
-//		ValidateAudience = false, // 验证应用者
-//		ValidateLifetime = true, // 验证是否过期
-//		ValidateIssuerSigningKey = true, // 验证 key
-//		IssuerSigningKey = SigningKey,
-
-//	};
-//});
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-	.AddJwtBearer(options =>
-	{
-		options.TokenValidationParameters = new TokenValidationParameters
-		{
-			ValidateIssuer = true,
-			ValidateAudience = true,
-			ValidateLifetime = true,
-			ValidateIssuerSigningKey = true,
-			ValidIssuer = builder.Configuration["JWT:Issuer"],
-			ValidAudience = builder.Configuration["JWT:Audience"],
-			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"]))
-		};
-	});
-
-// 对 OpenAPI 进行配置，之后 Swagger UI 右上角会增加一个全局请求头 Authorization 配置按钮。
-builder.Services.AddSwaggerGen(options =>
+// 为 Swagger 设置能输入请求头
+builder.Services.Configure<SwaggerGenOptions>(c =>
 {
-	var scheme = new OpenApiSecurityScheme()
-	{
-		// 说明，描述信息
-		Description = "Authorization header.\r\nExample:'Bearer 123456abcde'",
-		// 一个简单的对象，允许在内部和外部引用规范中的其他组件。
-		Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Authorization" },
-		// 必需的。在RFC7235中定义的授权头中使用的HTTP授权方案的名称。
-		Scheme = "oauth2",
-		// 必需的。要使用的头、查询或cookie参数的名称。
-		Name = "Authorization",
-		// 必需的。API密钥的位置。取值为query、header 或 cookie.
-		In = ParameterLocation.Header,
-		// 必需的。安全方案的类型。取值为apiKey、http、oauth2，openIdConnect。
-		Type = SecuritySchemeType.ApiKey
-	};
-	// 添加一个或多个“securityDefinitions”，描述你的API是如何被保护的。生成的Swagger
-	options.AddSecurityDefinition("Authorization", scheme);
-	var requirement = new OpenApiSecurityRequirement();
-	requirement[scheme] = new List<string>();
-	// 添加全局安全需求
-	options.AddSecurityRequirement(requirement);
+    c.AddAuthenticationHeader();
 });
+
+//// 授权，权限认证
+//builder.Services.AddAuthorization(options =>
+//{
+//	// 策略授权
+//	options.AddPolicy("AdminAndPersonnelInCharge", policy =>
+//		policy.RequireRole("admin,personnelInCharge")
+//	);
+//});
+// 授权，权限认证
+builder.Services.AddAuthorization();
+
+
+// 配置身份认证
+JWTOptions jwtOpt = builder.Configuration.GetSection("JWT").Get<JWTOptions>();
+builder.Services.AddJWTAuthentication(jwtOpt);
 
 
 // 注册 Redis 缓存 
 builder.Services.AddStackExchangeRedisCache(options =>
 {
+	// 连接 Redis 的服务器地址，默认 Redis 的服务器地址是 127.0.0.1
 	options.Configuration = "localhost";
 	// 设置缓存的 Key 前缀。
 	options.InstanceName = "ZZ_";
@@ -219,8 +204,8 @@ app.UseAuthentication();
 // 用于授权用户访问安全资源的授权中间件
 app.UseAuthorization();
 
-// 注册自定义中间件
-app.UseMiddleware<JWTMiddleware>();
+// 注册自定义中间件，（不需要了）
+//app.UseMiddleware<JWTMiddleware>();
 
 app.MapControllers();
 

@@ -17,12 +17,12 @@ namespace ZZ.Domain.Entities.JoinUs
 		/// <summary>
 		/// 部门
 		/// </summary>
-		public Department Department { get; set; }
+		public Department? Department { get; set; }
 
 		/// <summary>
 		/// 职位
 		/// </summary>
-		public Position Position { get; set; }
+		public Position? Position { get; set; }
 
 		/// <summary>
 		/// 处理人

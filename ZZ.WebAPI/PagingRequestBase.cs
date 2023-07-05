@@ -1,6 +1,6 @@
 ﻿namespace ZZ.WebAPI
 {
-	public class Paging
+	public class PagingRequestBase
 	{
 		/// <summary>
 		/// 第几页开始

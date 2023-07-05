@@ -1,6 +1,4 @@
-﻿using ZZ.Domain.Entities.Commons;
-using ZZ.Domain.Entities.Identity;
-using ZZ.Domain.Entities.Office;
+﻿using ZZ.Domain.Entities.Office;
 using ZZ.Domain.ValueObjects;
 
 namespace ZZ.Domain.Entities.JoinUs

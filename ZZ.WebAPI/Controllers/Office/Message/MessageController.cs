@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -11,6 +11,7 @@ namespace ZZ.WebAPI.Controllers.Office.Message
 {
     [Route("Office/[controller]/[action]")]
     [ApiController]
+    [Authorize]
     public class MessageController : ControllerBase
     {
         private readonly MyDbContext db;
@@ -28,13 +29,14 @@ namespace ZZ.WebAPI.Controllers.Office.Message
         [HttpPost]
         public IActionResult GetAllReply(ReplyRequest req)
         {
-            var userGuid = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            IQueryable<Reply> list = db.Replys.Include(e=>e.User);
+            string userGuid = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            IQueryable<Reply> sql = db.Replys.Include(e=>e.User).Where(e=>e.User.Id == Guid.Parse(userGuid));
 
             // 是否模糊搜索
             if (req.KeyWord != null)
             {
-                list = list.Where(e => e.ReplyContent.Contains(req.KeyWord));
+                sql = sql.Where(e => e.ReplyContent.Contains(req.KeyWord));
             }
 
             // 是否限定日期范围
@@ -42,13 +44,13 @@ namespace ZZ.WebAPI.Controllers.Office.Message
             {
                 if ( req.StartTime > req.EndTime )
                 {
-					return StatusCode(400, new { code = 400, msg = "开始时间要小于结束时间" });
+					return BadRequest(new ApiResponseBase(400, "开始时间要小于结束时间"));
 				}
-                list = list.Where(e => e.CreationTime >= req.StartTime && e.CreationTime <= req.EndTime );
+                sql = sql.Where(e => e.CreationTime >= req.StartTime && e.CreationTime <= req.EndTime );
             }
             else if((req.StartTime != null && req.EndTime == null) || (req.StartTime == null && req.EndTime != null))
             {
-                return StatusCode(400, new { code = 400, msg = "如果要填日期，则必须选择起始日期和结束日期" });
+                return BadRequest(new ApiResponseBase(400, "如果要选择日期，则必须选择起始日期和结束日期"));
             }
 
             // 是否限定消息状态
@@ -57,21 +59,21 @@ namespace ZZ.WebAPI.Controllers.Office.Message
                 HasRead r = ForeachEnum.GetEnumFromInt<HasRead>(req.HasRead);
                 if (r == HasRead.None)
                 {
-                    return StatusCode(400, new { code = 400, msg = "消息状态类型错误" });
+                    return BadRequest(new ApiResponseBase(400, "消息状态类型错误"));
                 }
-                list = list.Where(e => e.HasRead == r);
+                sql = sql.Where(e => e.HasRead == r);
             }
 
             ReplyType replyType = ForeachEnum.GetEnumFromInt<ReplyType>(req.ReplyType);
+            // 不为None则做消息类型限制
             if (replyType != ReplyType.None)
             {
-                list = list.Where(e=>e.ReplyType == replyType);
+                sql = sql.Where(e=>e.ReplyType == replyType);
             }
-            int count = list.Count();
-            var data = list.Skip((req.PageIndex - 1) * req.PageSize).Take(req.PageSize).ToList();
+            int count = sql.Count();
+            var data = sql.Skip((req.PageIndex - 1) * req.PageSize).Take(req.PageSize).ToList();
 
-            return StatusCode(200, new HttpResult(200,"获取成功", count, data));
+            return Ok(new ApiResponseChildB(200,"获取成功", count, data));
         }
-
     }
 }

@@ -13,6 +13,7 @@ namespace ZZ.Infrastructure.Configs
 			builder.ToTable("T_Resumes");
 
 			builder.Property(e => e.SalaryExpectation).HasColumnType("money");
+            builder.HasOne<Department>(e => e.Department).WithMany().OnDelete(DeleteBehavior.Restrict);
 			builder.HasOne<Position>(e => e.Position).WithMany().OnDelete(DeleteBehavior.Restrict);
 			builder.HasOne<User>(e=>e.CheckUser).WithMany().OnDelete(DeleteBehavior.Restrict);
 		}

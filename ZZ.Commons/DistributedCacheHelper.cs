@@ -49,19 +49,27 @@ namespace ZZ.Commons
 
 		public async Task<TResult?> GetOrCreateAsync<TResult>(string cacheKey, Func<DistributedCacheEntryOptions, Task<TResult?>> valueFactory, int expireSeconds = 60)
 		{
+			// 异步地从具有指定键的指定缓存中获取字符串。
 			string jsonStr = await distCache.GetStringAsync(cacheKey);
 			if (string.IsNullOrEmpty(jsonStr))
 			{
-				var options = CreateOptions(expireSeconds);
+				// redis中token的过期时间比jwt的过期时间少一个小时
+				var options = CreateOptions(expireSeconds - 3600);
+				// 得到Jwt字符串
 				TResult? result = await valueFactory(options);
+				// Json化
 				string jsonOfResult = JsonSerializer.Serialize(result,
 					typeof(TResult));
+				// 设置键、值、过期时间，设置缓存
 				await distCache.SetStringAsync(cacheKey, jsonOfResult, options);
 				return result;
 			}
 			else
 			{
-				await distCache.RefreshAsync(cacheKey);
+				// 根据键刷新缓存中的值，重置其滑动过期超时(如果有的话)。
+				//await distCache.RefreshAsync(cacheKey); // 罪魁祸首，最终Jwt过期了，Redis中的缓存没过期。
+				
+				// 反序列化Json
 				return JsonSerializer.Deserialize<TResult>(jsonStr)!;
 			}
 		}

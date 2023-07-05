@@ -11,6 +11,7 @@ namespace ZZ.Infrastructure
 {
 	public class MyDbContext : IdentityDbContext<User,Role,Guid>
 	{
+		public string Test { get; set; }
 		// JoinUs 模块
 		public DbSet<Certificate> Certificates { get; set; }
 		public DbSet<EducationHistory> EducationHistorys { get; set; }
@@ -32,7 +33,7 @@ namespace ZZ.Infrastructure
 
 		public MyDbContext(DbContextOptions<MyDbContext> options) : base(options) { }
 
-		protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder builder)
 		{
 			// 使用了 Identity 框架，此处不能省略。
 			base.OnModelCreating(builder);

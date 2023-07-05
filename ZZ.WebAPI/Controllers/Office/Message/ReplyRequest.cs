@@ -1,6 +1,6 @@
 ﻿namespace ZZ.WebAPI.Controllers.Office.Message
 {
-    public class ReplyRequest : Paging
+    public class ReplyRequest : PagingRequestBase
     {
         public string? KeyWord { get; set; }
         public DateTime? StartTime { get; set; }

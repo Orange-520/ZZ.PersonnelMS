@@ -12,6 +12,7 @@ namespace ZZ.Infrastructure.Configs
 		{
 			builder.ToTable("T_Records");
 			builder.Property(e => e.AvatarFileSHA256Hash).HasMaxLength(64).IsUnicode(false);
+			builder.HasOne<Department>(e=>e.Department).WithMany().OnDelete(DeleteBehavior.Restrict);
 			builder.HasOne<Position>(e => e.Position).WithMany().OnDelete(DeleteBehavior.Restrict);
 			builder.HasOne<User>(e=>e.CheckUser).WithMany().OnDelete(DeleteBehavior.Restrict);
 		}

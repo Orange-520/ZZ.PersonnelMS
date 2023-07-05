@@ -10,6 +10,7 @@ namespace ZZ.Infrastructure.Configs
 		public void Configure(EntityTypeBuilder<HiringNeedApply> builder)
 		{
 			builder.ToTable("T_HiringNeedApplys");
+			builder.HasOne<Department>(e => e.Department).WithMany().OnDelete(DeleteBehavior.Restrict);
 			builder.HasOne<Position>(e => e.Position).WithMany().OnDelete(DeleteBehavior.Restrict);
 		}
 	}

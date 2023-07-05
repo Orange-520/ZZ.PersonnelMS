@@ -13,12 +13,12 @@ namespace ZZ.Domain.Entities.Office
 		/// <summary>
 		/// 需求部门
 		/// </summary>
-		public Department Department { get; set; }
+		public Department? Department { get; set; }
 
 		/// <summary>
 		/// 需求岗位
 		/// </summary>
-		public Position Position { get; set; }
+		public Position? Position { get; set; }
 		public int NeedPersonCount { get; set; }
 		public int HasPersonCount { get; set; } = 0;
 		public List<Resume>? CurrentResumes { get; set; } = new List<Resume>();

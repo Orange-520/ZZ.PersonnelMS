@@ -65,6 +65,9 @@ namespace ZZ.Domain.Entities.Office
 			this.IsDeleted= true;
 		}
 
+		/// <summary>
+		/// 修改未读状态为已读
+		/// </summary>
 		public void AlterReadState()
 		{
 			this.HasRead = HasRead.YesRead;

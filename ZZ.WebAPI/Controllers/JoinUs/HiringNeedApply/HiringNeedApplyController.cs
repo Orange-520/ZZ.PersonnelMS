@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ZZ.Domain.ValueObjects;
 using ZZ.Infrastructure;
@@ -7,6 +8,7 @@ namespace ZZ.WebAPI.Controllers.JoinUs.HiringNeedApply
 {
 	[Route("JoinUs/[controller]/[action]")]
 	[ApiController]
+	[Authorize]
 	public class HiringNeedApplyController : ControllerBase
 	{
 		private readonly MyDbContext db;
@@ -40,7 +42,7 @@ namespace ZZ.WebAPI.Controllers.JoinUs.HiringNeedApply
 
 			sql = sql.Include(HiringNeedApply => HiringNeedApply.CurrentResumes).ThenInclude(CurrentResumes => CurrentResumes.CheckUser);
 
-			IQueryable<HiringNeedApplyResponse> list = sql.Select(e => new HiringNeedApplyResponse
+            IQueryable<HiringNeedApplyResponse> list = sql.Select(e => new HiringNeedApplyResponse
 			{
 				Id = e.Id,
 				applyUserName = e.User.UserName,
@@ -57,7 +59,7 @@ namespace ZZ.WebAPI.Controllers.JoinUs.HiringNeedApply
 
 			List<HiringNeedApplyResponse> data = list.Skip((req.PageIndex - 1) * req.PageSize).Take(req.PageSize).ToList();
 
-			return StatusCode(200, new HttpResult(200,"请求成功",total,data));
+			return Ok(new ApiResponseChildB(200,"请求成功",total,data));
 		}
 	}
 }
