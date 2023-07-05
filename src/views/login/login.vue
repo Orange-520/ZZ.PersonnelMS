@@ -21,7 +21,8 @@
 </template>
 
 <script>
-import { LOGIN } from "@/https/login";
+import { Login } from "@/https/identity/identity.js";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -32,22 +33,26 @@ export default {
     };
   },
   methods: {
-    login() {
-      LOGIN({
+    // 获取用户信息
+    ...mapActions(["getUserMessage"]),
+    // 登录
+    async login() {
+      window.localStorage.removeItem("token");
+
+      await Login({
         userName: this.ruleForm.userName,
         password: this.ruleForm.password,
       })
-        .then((res) => {
+        .then( res => {
           console.log("登录", res);
-          window.localStorage.setItem("token", res.token);
-          this.$message.success(res.msg);
-          // 缓慢进入，加钱提高性能【斜眼笑】
-          // setTimeout(() => {
-          //   this.$router.push({ path: "/home/office/message" });
-          // }, 2000);
-          this.$router.push({ path: "/home/office/message" });
+          window.localStorage.setItem("token", res.data);
+
+          // 获取用户信息
+          this.getUserMessage().then(() => {
+            this.$router.push({ path: "/home/office/message" });
+          });
         })
-        .catch((err) => {});
+        .catch(() => {});
     },
   },
 };

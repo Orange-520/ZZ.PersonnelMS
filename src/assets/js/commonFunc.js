@@ -89,6 +89,17 @@ function isPhone(phone){
   let result = str.test(phone);
   return result;
 }
+
+// 将obj1对象中的属性值映射到obj2对象中
+function obj1MapObj2(obj1,obj2){
+  for (let key in obj1) {
+    if (obj2.hasOwnProperty(key)) {
+      obj2[key] = obj1[key];
+    }
+  }
+  return obj2;
+}
+
 export {
   transitionIfuse,
   ifMoney,
@@ -96,5 +107,6 @@ export {
   isJPGAndIsLt2M,
   isPwdFormat,
   isPositiveIntegerNumber,
-  isPhone
+  isPhone,
+  obj1MapObj2
 }

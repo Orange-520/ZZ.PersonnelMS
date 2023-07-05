@@ -1,5 +1,14 @@
 import http from '@/assets/js/http.js';
 
+// 添加简历
+function AddResume(data) {
+  return http({
+    method: "POST",
+    url: "/JoinUs/Resume/AddResume",
+    data
+  });
+}
+
 // 获取应聘列表
 function GetResumeList(data) {
   return http({
@@ -29,5 +38,5 @@ function ChangeJoinUsResult(data) {
 
 
 export {
-  GetResumeList,ChangeJoinUsStep,ChangeJoinUsResult
+  AddResume,GetResumeList,ChangeJoinUsStep,ChangeJoinUsResult
 }

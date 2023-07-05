@@ -30,9 +30,8 @@
       </div>
     </el-aside>
 
-    <!-- 右边展示区 -->
-    <el-main class="main-box">
-      <div class="content-box">
+    <el-container>
+      <el-header>
         <!-- 顶部操作区 -->
         <div class="top-box">
           <span class="top-box-item input-1">
@@ -94,78 +93,77 @@
             >
           </span>
         </div>
+      </el-header>
 
-        <!-- 消息提醒列表 -->
-        <div class="content-box-body">
-          <el-table
-            class="table-box"
-            :data="tableData"
-            border
-            style="width: 100%;"
-            :fit="true"
-            :cell-style="{ 'text-align': 'center', width: 'auto' }"
-            :header-cell-style="{ 'text-align': 'center' }"
-          >
-            <el-table-column label="" width="70" align="left">
-              <template slot-scope="scope">
-                {{
-                  scope.$index +
-                  1 +
-                  (searchObj.pageIndex - 1) * searchObj.pageSize
-                }}
-              </template>
-            </el-table-column>
+      <el-main>
+        <!-- 使用 Container 布局容器，便可实现区域内滚动 -->
+        <!-- 为表格设置高度便可固定表头 -->
+        <el-table
+          class="table-box"
+          :data="tableData"
+          border
+          height="100%"
+          style="width: 100%"
+          :fit="true"
+          :cell-style="{ 'text-align': 'center', width: 'auto' }"
+          :header-cell-style="{ 'text-align': 'center' }"
+        >
+          <el-table-column label="" width="70" align="left">
+            <template slot-scope="scope">
+              {{
+                scope.$index +
+                1 +
+                (searchObj.pageIndex - 1) * searchObj.pageSize
+              }}
+            </template>
+          </el-table-column>
 
-            <el-table-column prop="hasRead" label="状态">
-              <template>
-                <el-badge is-dot class="item" :hidden="false">
-                  <i class="el-icon-message hasRead"></i>
-                </el-badge>
-              </template>
-            </el-table-column>
+          <el-table-column prop="hasRead" label="状态">
+            <template>
+              <el-badge is-dot class="item" :hidden="false">
+                <i class="el-icon-message hasRead"></i>
+              </el-badge>
+            </template>
+          </el-table-column>
 
-            <el-table-column
-              prop="replyTypeName"
-              label="类型"
-            ></el-table-column>
+          <el-table-column prop="replyTypeName" label="类型"></el-table-column>
 
-            <el-table-column
-              prop="replyTitle"
-              label="标题"
-              :show-overflow-tooltip="true"
-            ></el-table-column>
+          <el-table-column
+            prop="replyTitle"
+            label="标题"
+            :show-overflow-tooltip="true"
+          ></el-table-column>
 
-            <el-table-column
-              prop="publisherUser.userName"
-              label="发布人"
-            ></el-table-column>
+          <el-table-column
+            prop="publisherUser.userName"
+            label="发布人"
+          ></el-table-column>
 
-            <el-table-column
-              prop="creationTime"
-              label="发布时间"
-            ></el-table-column>
+          <el-table-column
+            prop="creationTime"
+            label="发布时间"
+          ></el-table-column>
 
-            <el-table-column fixed="right" label="操作" width="200px">
-              <template slot-scope="scope">
-                <el-button
-                  type="primary"
-                  size="small"
-                  @click="showDialogRepertory(scope.row)"
-                  >详情</el-button
-                >
-                <el-button
-                  type="danger"
-                  size="small"
-                  @click="showDialogRepertory(scope.row)"
-                  >删除</el-button
-                >
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-      </div>
+          <el-table-column fixed="right" label="操作" width="200px">
+            <template slot-scope="scope">
+              <el-button
+                type="primary"
+                size="small"
+                @click="showDialogRepertory(scope.row)"
+                >详情</el-button
+              >
+              <el-button
+                type="danger"
+                size="small"
+                @click="showDialogRepertory(scope.row)"
+                >删除</el-button
+              >
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-main>
 
-      <div class="footer-box">
+      <el-footer>
         <!-- 分页 -->
         <el-pagination
           class="pagination_box"
@@ -179,8 +177,8 @@
           :total="total"
         >
         </el-pagination>
-      </div>
-    </el-main>
+      </el-footer>
+    </el-container>
   </el-container>
 </template>
 
@@ -361,82 +359,64 @@ export default {
 <style lang='less' scoped>
 .message {
   height: 100%;
-  // border: 1px solid red;
-  // padding: 0 5px;
 
-  // 节点控件
-  .tree-box {
-    // margin-top:10px;
-    margin: 10px 5px 0 5px;
-    border: 2px solid rgb(248, 248, 248);
+  .el-aside {
+    // 节点控件
+    .tree-box {
+      // margin-top:10px;
+      margin: 10px 5px 0 5px;
+      border: 2px solid rgb(248, 248, 248);
 
-    & > div:first-child {
-      text-align: center;
-      padding: 10px 0;
-      background: rgb(248, 248, 248);
-      color: rgba(0, 0, 0, 0.8);
+      & > div:first-child {
+        text-align: center;
+        padding: 10px 0;
+        background: rgb(248, 248, 248);
+        color: rgba(0, 0, 0, 0.8);
+      }
     }
   }
 
-  // 取消布局容器默认的填充
-  .el-card__body,
+  .el-header {
+    height: 40px !important;
+    line-height: 40px;
+    background: rgb(242, 242, 242);
+    white-space: nowrap;
+    padding: 0 10px;
+
+    .top-box {
+      display: flex;
+
+      & > span {
+        padding-right: 10px;
+      }
+    }
+  }
+
   .el-main {
     padding: 0;
+
+    .table-box {
+      .el-badge {
+        margin: 10px;
+      }
+      .el-icon-message {
+        font-size: 2rem;
+      }
+      /deep/.el-badge__content {
+        margin-top: 5px;
+        margin-right: 2px;
+      }
+    }
   }
 
-  .main-box{
-    // border: 1px solid red;
+  .el-footer {
+    z-index: 3;
+    height: 60px;
     display: flex;
-    flex-direction: column;
-
-    .content-box{
-      flex: 1;
-
-      // 顶部搜索区
-      .top-box {
-        // border: 1px solid red;
-        min-height: 40px;
-        height: 8%;
-        background: rgb(242, 242, 242);
-        display: flex;
-        align-items: center;
-
-        & > span {
-          padding-left: 10px;
-        }
-      }
-
-      // 表格
-      .content-box-body{
-        // height: 100%;
-        height: 92%;
-        
-        .table-box{
-          height: 100%;
-        }
-
-        .item {
-          margin: 10px;
-        }
-        .hasRead {
-          font-size: 2rem;
-        }
-        /deep/.el-badge__content {
-          margin-top: 5px;
-          margin-right: 2px;
-        }
-      }
-    }
-
-    // 底部分页
-    .footer-box{
-      z-index: 1;
-      height: 8%;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      padding: 0 20px;
-    }
+    justify-content: flex-end;
+    align-items: center;
+    box-shadow: 0 -2px 2px 0 rgb(0 0 0 / 10%);
+    overflow: hidden;
   }
 }
 </style>

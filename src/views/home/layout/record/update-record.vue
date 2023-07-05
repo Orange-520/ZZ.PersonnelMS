@@ -1,8 +1,8 @@
 <template>
-  <div class="add-record-component">
+  <div class="update-record-component">
     <!-- 顶部搜索 -->
     <div class="top-box">
-      <span>新增</span>
+      <span>修改档案信息</span>
       <span
         class="pointer s_close"
         @click="
@@ -13,10 +13,10 @@
       </span>
     </div>
 
-    <!-- 登记表 -->
+    <!-- 修改档案信息 -->
     <div class="content">
       <div class="title">
-        <div>入职信息登记</div>
+        <div>修改档案信息</div>
       </div>
 
       <div class="content-box">
@@ -29,8 +29,8 @@
         <!-- 表单 -->
         <el-form
           class="ruleForm"
-          ref="ruleForm"
-          :model="ruleForm"
+          ref="record"
+          :model="record"
           :rules="rules"
           label-width="140px"
           size="small"
@@ -47,14 +47,14 @@
                 :label="item.label"
               >
                 <template v-if="item.type === 'input'">
-                  <el-input v-model="ruleForm[item.prop]" />
+                  <el-input v-model="record[item.prop]" />
                 </template>
 
                 <template v-if="item.type === 'select'">
                   <el-select
-                    v-model="ruleForm[item.prop]"
+                    v-model="record[item.prop]"
                     style="width: 100%"
-                    @change="clearValidate('ruleForm', item.prop)"
+                    @change="clearValidate('record', item.prop)"
                   >
                     <el-option
                       v-for="option in item.optionsList"
@@ -68,7 +68,7 @@
 
                 <template v-if="item.type === 'date-picker'">
                   <el-date-picker
-                    v-model="ruleForm[item.prop]"
+                    v-model="record[item.prop]"
                     type="date"
                     placeholder="选择日期"
                     value-format="yyyy-MM-dd"
@@ -81,7 +81,7 @@
                   <el-cascader
                     style="width: 100%"
                     ref="elCascader"
-                    v-model="ruleForm[item.prop]"
+                    v-model="record[item.prop]"
                     :options="item.optionsList"
                     :props="item.cascaderProps"
                     @change="changeDepartment"
@@ -100,8 +100,8 @@
                     :on-progress="handleAvatarProgress"
                   >
                     <el-image
-                      v-if="ruleForm.avatar"
-                      :src="baseURL +'/image/'+ruleForm.avatar"
+                      v-if="record.avatar"
+                      :src="baseURL +'/image/'+record.avatar"
                       fit="fit"
                       class="avatar"
                     >
@@ -122,12 +122,12 @@
                   :label="item.label"
                 >
                   <template v-if="item.type === 'input'">
-                    <el-input v-model="ruleForm[item.prop]" />
+                    <el-input v-model="record[item.prop]" />
                   </template>
 
                   <template v-if="item.type === 'textarea'">
                     <el-input
-                      v-model="ruleForm[item.prop]"
+                      v-model="record[item.prop]"
                       type="textarea"
                       :rows="2"
                     />
@@ -135,9 +135,9 @@
 
                   <template v-if="item.type === 'select'">
                     <el-select
-                      v-model="ruleForm[item.prop]"
+                      v-model="record[item.prop]"
                       style="width: 100%"
-                      @change="clearValidate('ruleForm', item.prop)"
+                      @change="clearValidate('record', item.prop)"
                     >
                       <el-option
                         v-for="option in item.optionsList"
@@ -151,7 +151,7 @@
 
                   <template v-if="item.type === 'date-picker'">
                     <el-date-picker
-                      v-model="ruleForm[item.prop]"
+                      v-model="record[item.prop]"
                       type="date"
                       placeholder="选择日期"
                       value-format="yyyy-MM-dd"
@@ -164,7 +164,7 @@
                     <el-cascader
                       style="width: 100%"
                       ref="elCascader"
-                      v-model="ruleForm[item.prop]"
+                      v-model="record[item.prop]"
                       :options="item.optionsList"
                       :props="item.cascaderProps"
                       @change="changeDepartment"
@@ -705,7 +705,7 @@
             type="primary"
             class="result-btn"
             @click="addRecord('ruleForm')"
-            >登记入职档案信息</el-button
+            >修改档案信息</el-button
           >
         </div>
       </div>
@@ -714,8 +714,9 @@
 </template>
 
 <script>
-import { AddRecord } from "@/https/join-us/add.js";
-import { GetAllDepartment, FindPositionByDepartment } from "@/https/commons.js";
+import { AddRecord } from "@/https/join-us/record.js";
+import { GetAllDepartment } from "@/https/department.js";
+import { GetPositionByDepartment } from "@/https/position.js";
 import {isJPGAndIsLt2M} from '@/assets/js/commonFunc.js';
 import { mapState } from 'vuex';
 export default {
@@ -1336,7 +1337,9 @@ export default {
     };
   },
   computed:{
-    ...mapState(["baseURL", "fileUploadURL"])
+    ...mapState(["baseURL", "fileUploadURL"]),
+    ...mapState('record',["record"]),
+    
   },
   created() {
     // console.log(this.$route);
@@ -1369,7 +1372,7 @@ export default {
     },
     // 获取职位列表
     getPosition(id) {
-      FindPositionByDepartment(id)
+      GetPositionByDepartment(id)
         .then((res) => {
           console.log(res, "职位");
           this.ruleForm.positionId = "";
@@ -1508,7 +1511,7 @@ export default {
 </script>
 
 <style lang='less' scoped>
-.add-record-component {
+.update-record-component {
   // border: 1px solid red;
   position: absolute;
   top: 0;

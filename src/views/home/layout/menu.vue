@@ -47,18 +47,22 @@ export default {
             {
               name: "消息提醒",
               url: "/home/office/message",
+              routerName:'message'
             },
             {
               name: "个人申请",
-              url: "/home/office/userApply",
+              url: "/home/office/userApply/applyList",
+              routerName:'applyList'
             },
             {
               name: "申请审批",
               url: "/home/office/approve",
+              routerName:'approve'
             },
             {
               name: "公告通知",
               url: "/home/office/notice",
+              routerName:'notice'
             },
           ],
         },
@@ -69,7 +73,13 @@ export default {
           children: [
             {
               name: "公告发布",
-              url: "/home/notice/noticePublish",
+              url: "/home/xz-management/noticePublish",
+              routerName:'noticePublish'
+            },
+            {
+              name: "部门和职位管理",
+              url: "/home/xz-management/departmentAndPosition/department",
+              routerName:'department'
             },
           ],
         },
@@ -81,10 +91,12 @@ export default {
             {
               name: "人事档案",
               url: "/home/record/recordList",
+              routerName:'recordList'
             },
             {
               name: "离职档案",
               url: "/home/record/dimissionList",
+              routerName:'dimissionList'
             },
           ],
         },
@@ -96,37 +108,27 @@ export default {
             {
               name: "招聘需求",
               url: "/home/joinUs/hiringNeedsList",
+              routerName:'hiringNeedsList'
             },
             {
               name: "应聘登记",
               url: "/home/joinUs/addResume",
+              routerName:'addResume'
             },
             {
               name: "应聘列表",
               url: "/home/joinUs/resumeList",
+              routerName:'resumeList'
             },
             {
               name: "人才库",
               url: "/home/joinUs/personLibrary",
+              routerName:'personLibrary'
             },
             {
               name: "资料库",
               url: "/home/joinUs/dataLibrary",
-            },
-          ],
-        },
-        {
-          icon: "el-icon-caret-right",
-          name: "系统管理",
-          url: "4",
-          children: [
-            {
-              name: "账号管理",
-              url: "/home/system/account",
-            },
-            {
-              name: "部门和职位管理",
-              url: "/home/system/departmentAndPosition",
+              routerName:'dataLibrary'
             },
           ],
         },
@@ -161,6 +163,7 @@ export default {
   padding: 10px 0;
   font-size: 1.2rem;
   background: rgb(30, 158, 255);
+  z-index: 2;
   // background: rgb(57, 61, 73);
 }
 

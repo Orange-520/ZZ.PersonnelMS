@@ -1,10 +1,23 @@
 <template>
-  <div class="apply-list">
-    <div class="content-box">
+  <el-container class="apply-list">
+    <el-header>
+      <!-- 顶部分类 -->
+      <el-tag
+        class="category-item pointer"
+        v-for="(item, index) in tags"
+        :key="index"
+        :type="item.type"
+        @click="showDetail(item)"
+        >{{ item.name }}</el-tag
+      >
+    </el-header>
+
+    <el-main>
       <el-table
         class="table-box"
         :data="tableData"
         border
+        height="100%"
         style="width: 100%"
         :fit="true"
         :cell-style="{ 'text-align': 'center', width: 'auto' }"
@@ -12,11 +25,18 @@
       >
         <el-table-column label="序号" width="70" align="left">
           <template slot-scope="scope">
-            {{ scope.$index + 1 + (ruleForm.currentPage - 1) * ruleForm.pageSize }}
+            {{
+              scope.$index + 1 + (ruleForm.currentPage - 1) * ruleForm.pageSize
+            }}
           </template>
         </el-table-column>
 
-        <el-table-column prop="applyTypeName" label="申请类型"> </el-table-column>
+        <el-table-column
+          prop="applyType"
+          label="申请类型"
+          :formatter="applyTypeColumnFormatter"
+        >
+        </el-table-column>
 
         <el-table-column
           prop="content"
@@ -24,14 +44,18 @@
           :show-overflow-tooltip="true"
         ></el-table-column>
 
+        <!-- 处理显示内容 -->
+        <!-- 方式一：绑定格式化方法 formatter -->
         <el-table-column
           prop="createTime"
           label="申请时间"
           :show-overflow-tooltip="true"
+          :formatter="createTimeColumnFormatter"
         >
         </el-table-column>
 
         <el-table-column prop="checkState" label="审核状态">
+          <!-- 方式二：使用插槽，使用三元运算符 -->
           <template slot-scope="scope">
             <span
               :class="
@@ -69,9 +93,9 @@
           </template>
         </el-table-column>
       </el-table>
-    </div>
+    </el-main>
 
-    <div class="footer-box">
+    <el-footer>
       <!-- 分页 -->
       <el-pagination
         class="pagination_box"
@@ -85,8 +109,8 @@
         :total="total"
       >
       </el-pagination>
-    </div>
-  </div>
+    </el-footer>
+  </el-container>
 </template>
 
 <script>
@@ -95,7 +119,7 @@ export default {
   data() {
     return {
       tableData: [],
-      ruleForm:{
+      ruleForm: {
         currentPage: 1,
         pageSize: 10,
       },
@@ -103,10 +127,40 @@ export default {
       pageSizes: [10, 20, 50, 100],
       // 总页数
       total: 0,
+      // 分类
+      tags: [
+        {
+          name: "招聘需求",
+          type: "",
+          path: "/home/office/userApply/applyHiringNeeds",
+          routerName: "applyHiringNeeds",
+        },
+        {
+          name: "出差",
+          type: "success",
+        },
+        {
+          name: "请假单",
+          type: "info",
+          path: "/home/office/userApply/applyAskForLeave",
+          routerName: "applyAskForLeave",
+        },
+        {
+          name: "离职",
+          type: "danger",
+        },
+        {
+          name: "报销",
+          type: "warning",
+        },
+      ],
     };
   },
   computed: {},
   methods: {
+    showDetail(item) {
+      this.$router.push({ name: item.routerName });
+    },
     // pageSize改变时调用
     handleSizeChange(val) {
       // 改变每页显示条目个数
@@ -123,41 +177,32 @@ export default {
         .then((res) => {
           console.log("用户个人申请", res);
           this.total = res.total;
-          this.tableData = res.data.map((item) => {
-            Object.defineProperty(item, "applyTypeName", {
-              value: "",
-              writable: true,
-            });
-            switch (item.applyType) {
-              case 1:
-                item.applyTypeName = "招聘需求";
-                break;
-              case 2:
-                item.applyTypeName = "出差";
-                break;
-              case 3:
-                item.applyTypeName = "请假";
-                break;
-              case 4:
-                item.applyTypeName = "离职";
-                break;
-              case 5:
-                item.applyTypeName = "报销";
-                break;
-              default:
-                break;
-            }
-
-            // 处理时间戳
-            let t = new Date(item.createTime);
-            item.createTime = `${t.getFullYear()}-${
-              t.getMonth() + 1
-            }-${t.getDate()} ${t.getHours()}:${t.getMinutes()}:${t.getSeconds()}`;
-
-            return item;
-          });
+          this.tableData = res.data;
         })
         .catch(() => {});
+    },
+    // 处理申请类型列
+    applyTypeColumnFormatter(row, column, cellValue, index) {
+      console.log(cellValue);
+      switch (cellValue) {
+        case 1:
+          return "招聘需求";
+        case 2:
+          return "出差";
+        case 3:
+          return "请假";
+        case 4:
+          return "离职";
+        case 5:
+          return "报销";
+      }
+    },
+    // 处理申请时间列
+    createTimeColumnFormatter(row, column, cellValue, index) {
+      let t = new Date(cellValue);
+      return `${t.getFullYear()}-${
+        t.getMonth() + 1
+      }-${t.getDate()} ${t.getHours()}:${t.getMinutes()}`;
     },
   },
   created() {
@@ -177,29 +222,39 @@ export default {
   color: rgb(22, 203, 255);
 }
 
-.apply-list{
-  // border: 1px solid red;
+.apply-list {
   height: 100%;
-  display: flex;
-  flex-direction: column;
 
-  .content-box{
-    flex: 1;
+  .el-header {
+    height: 40px !important;
+    line-height: 40px;
+    background: rgb(242, 242, 242);
+    white-space: nowrap;
+    padding: 0 10px;
 
-    .table-box{
-      height: 100%;
+    .category-item {
+      margin-right: 5px;
+    }
+
+    .el-tag {
+      height: 30px;
+      line-height: 30px;
     }
   }
 
-  // 底部分页
-  .footer-box{
-    z-index: 1;
-    height: 8%;
+  .el-main {
+    // 清除默认填充
+    padding: 0;
+  }
+
+  .el-footer {
+    z-index: 3;
+    height: 60px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    padding: 0 20px;
     box-shadow: 0 -2px 2px 0 rgb(0 0 0 / 10%);
+    overflow: hidden;
   }
 }
 </style>
