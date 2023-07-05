@@ -26,7 +26,7 @@ namespace ZZ.WebAPI.Controllers.JoinUs.HiringNeedApply
 		public IActionResult GetHiringNeedApply(HiringNeedsApplyRequest req)
 		{
 			// 获取通过审核申请的招聘需求
-			IQueryable<ZZ.Domain.Entities.Office.HiringNeedApply> sql = this.db.HiringNeedApplys.AsNoTracking().Where(e => e.CheckState == CheckState.Yes);
+			IQueryable<ZZ.Domain.Entities.Office.HiringNeedApply> sql = this.db.HiringNeedApplys.Where(e => e.CheckState == CheckState.Yes);
 
 			// 是否搜索职位关键字
 			if (req.PositionWordKey != null && req.PositionWordKey != "")
@@ -41,6 +41,12 @@ namespace ZZ.WebAPI.Controllers.JoinUs.HiringNeedApply
 			sql = sql.Include(HiringNeedApply => HiringNeedApply.CurrentResumes).ThenInclude(CurrentResumes => CurrentResumes.Position);
 
 			sql = sql.Include(HiringNeedApply => HiringNeedApply.CurrentResumes).ThenInclude(CurrentResumes => CurrentResumes.CheckUser);
+
+            sql = sql.Include(HiringNeedApply => HiringNeedApply.CurrentResumes).ThenInclude(CurrentResumes => CurrentResumes.WorkHistory);
+
+            sql = sql.Include(HiringNeedApply => HiringNeedApply.CurrentResumes).ThenInclude(CurrentResumes => CurrentResumes.EducationHistory);
+
+            sql = sql.Include(HiringNeedApply => HiringNeedApply.CurrentResumes).ThenInclude(CurrentResumes => CurrentResumes.Certificate);
 
             IQueryable<HiringNeedApplyResponse> list = sql.Select(e => new HiringNeedApplyResponse
 			{
